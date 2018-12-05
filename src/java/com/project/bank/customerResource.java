@@ -60,13 +60,16 @@ String pWord = "Lola.1.2.3";
         
         ArrayList<customer> arr = new ArrayList<>();
        
-        Class.forName("org.apache.derby.jdbc.ClientDriver");
+        Class.forName("org.apache.derby.jdbc.ClientDriver");//accounts.status
         conn = DriverManager.getConnection(url, userN, pWord);
         Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery("SELECT * FROM customers");
-        while(rs.next()){
+       // ResultSet rs = st.executeQuery("SELECT * FROM customers");
+      // ResultSet rs = st.executeQuery("SELECT customers.customer_id,customers.name, accounts.customer_id")
+       ResultSet rs = st.executeQuery( "SELECT customers.name, customers.address, customers.email,customers.password FROM customers INNER JOIN accounts ON customers.customer_id = accounts.customer_id");
+       //gets back all customers with same customerID
+       while(rs.next()){
             customer ts = new customer();
-         //  ts.setId(rs.getInt("customer_id "));
+          //ts.setId(rs.getInt("id"));
             ts.setName(rs.getString("name"));
                    ts.setAddress(rs.getString("address"));
                           ts.setEmail(rs.getString("email"));
