@@ -66,7 +66,7 @@ String pWord = "Lola.1.2.3";
         ResultSet rs = st.executeQuery("SELECT * FROM customers");
         while(rs.next()){
             customer ts = new customer();
-          // ts.setId(rs.getInt("customer_id "));
+         //  ts.setId(rs.getInt("customer_id "));
             ts.setName(rs.getString("name"));
                    ts.setAddress(rs.getString("address"));
                           ts.setEmail(rs.getString("email"));
@@ -102,7 +102,7 @@ String pWord = "Lola.1.2.3";
                 if (status == 1) {
                     */
            //hellokpedj
-                
+                 String er = "Error The account has been removed or doesnt exist";
                     String verifyAPI = "SELECT * FROM customers WHERE customer_id = ?";
                     PreparedStatement st = conn.prepareStatement(verifyAPI);
                     st.setInt(1, id);
@@ -111,11 +111,15 @@ String pWord = "Lola.1.2.3";
                     if (rs.next()) {
                         customer e = getFromResultSet(rs);
                         events.add(e);
-
+                         conn.close();
+ return Response.status(200).entity(gson.toJson(events)).build();
+  
                     }
-                    conn.close();
-                    return Response.status(200).entity(gson.toJson(events)).build();
-                } 
+                    
+                    else {
+                    return Response.status(200).entity(gson.toJson(er)).build();
+                }
+    }
          
        
 }
