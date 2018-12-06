@@ -122,13 +122,16 @@ String pWord = "Lola.1.2.3";
     }
     
    @POST
-   @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
+   @Consumes("application/x-www-form-urlencoded")
+  // @Consumes(MediaType.MULTIPART_FORM_DATA)
+   //@Produces(MediaType.MULTIPART_FORM_DATA)
+   //@Consumes({MediaType.APPLICATION_JSON})
+    //@Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
     @Path("/createCustomer")
-       public Response createCust(   @QueryParam ("name")String name,
-            @QueryParam("address")String add,
-            @QueryParam("email")String email,
-            @QueryParam("password")String pass,@Context HttpServletResponse response) throws UnsupportedEncodingException, SQLException, ClassNotFoundException{
+       public Response createCust(   @FormParam  ("name")String name,
+            @FormParam ("address")String add,
+            @FormParam ("email")String email,
+            @FormParam ("password")String pass,@Context HttpServletResponse response) throws UnsupportedEncodingException, SQLException, ClassNotFoundException{
            
            Gson gson = new Gson();
            
