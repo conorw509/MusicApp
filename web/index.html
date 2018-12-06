@@ -11,11 +11,43 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        
+        <h1> Bank Application</h1>
         <a href ="http://localhost:8080/Bank/webresources/customer/getAllCustomers">get All Customers</a>
         
    
         
-        <a href="addCustomer.html">Add Customer</a>
-        
+    
+       
+         <h1>Add Account</h1>
+         <form action ="http://localhost:8080/Bank/webresources/customer/addAccount" method ="post">
+            <input type ="text" name ="Customer id" placeholder="id">
+               <select name="Account Type">
+    <option value="Student">Student</option>
+    <option value="Current">Current</option>
+
+  </select>
+  <br><br>
+            
+            <!-- <input type ="text" name ="Account Type" placeholder="Account Type">-->
+               <!-- <select name="Account Type" size="2" multiple>
+                     <option value="Student">Student</option>
+                     <option value="Current">Current</option> <select>-->
+                     
+                    
+                   
+                        <input type ="submit" value="Add">
+             </form>
+         
+         <h1>Add Customer</h1>
+         <form action ="http://localhost:8080/Bank/webresources/customer/createCustomer" method ="post">
+            <input type ="text" name ="name" placeholder="name">
+                <input type ="text" name ="address" placeholder="address">
+                    <input type ="text" name ="email" placeholder="email">
+                        <input type ="text" name ="password" placeholder="password">
+                        <input type ="submit" value="save">
+            
+            
+        </form>
     </body>
 </html>

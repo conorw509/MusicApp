@@ -8,7 +8,7 @@ package com.project.bank;
 
 import com.google.gson.Gson;
 import com.project.bank.objects.customer;
-import com.project.bank.service.customerService;
+
 import static com.sun.corba.se.impl.presentation.rmi.StubConnectImpl.connect;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -47,7 +47,7 @@ import static org.apache.tomcat.jni.Local.connect;
 
 /**
  *
- * @author conor
+ * @author conor 
  */
 @Path("/customer")
 public class customerResource {
@@ -57,8 +57,35 @@ String userN = "root";
 String pWord = "Lola.1.2.3";
  Connection conn = null;
  int count = 0;
- customerService service = new customerService();
 
+     Gson gson = new Gson();
+
+   private boolean isSavingsAccount(String accountNumber) throws SQLException, NamingException, ClassNotFoundException {
+        PreparedStatement st;
+       Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
+        conn = DriverManager.getConnection(url, userN, pWord);
+        st = conn.prepareStatement("SELECT * FROM customers AS c JOIN accounts AS a ON c.customer_id = a.customer_id WHERE account_type = 2 AND account_Id= ?");
+        st.setString(1, accountNumber);
+        ResultSet rs2 = st.executeQuery();
+        boolean isValid = rs2.next();
+        conn.close();
+        return isValid;
+    }
+
+    private boolean isCurrentAccount(String accountNumber) throws SQLException, NamingException, ClassNotFoundException {
+        PreparedStatement st;
+        Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
+        conn = DriverManager.getConnection(url, userN, pWord);
+        st = conn.prepareStatement("SELECT * FROM customers AS c JOIN accounts AS a ON c.customer_id = a.customer_id WHERE account_type = 1 AND account_Id = ?");
+        st.setString(1, accountNumber);
+        ResultSet rs2 = st.executeQuery();
+        boolean isValid = rs2.next();
+        conn.close();
+        return isValid;
+    }
+ 
+ 
+ 
  
   public customer getFromResultSet(ResultSet rs) throws SQLException {
         customer customer = new customer();
@@ -68,7 +95,7 @@ String pWord = "Lola.1.2.3";
         customer.setPassword("password");
         customer.setAddress("address");
         return customer;
-    }
+    } 
  
   
   
@@ -100,52 +127,115 @@ String pWord = "Lola.1.2.3";
         }
         
         return arr;     
-    }
+   }
+    
+    
     
     @POST
-    @Path("/addCustomer") 
-    //   @Consumes(MediaType.MULTIPART_FORM_DATA)
-   @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
-    public Response addCustomer( 
+    @Path("/addAccount") 
+   @Consumes("application/x-www-form-urlencoded")
+    public Response addAccount(@FormParam("sort_code")String sort_code,@FormParam("customer_id") int customer_Id, @FormParam("account_type")String accountType,   @Context UriInfo response) throws SQLException, ClassNotFoundException, NamingException{
+           
             
-            @FormParam ("name")String name,
-            @FormParam("address")String add,
-            @FormParam("email")String emaail,
-            @FormParam("password")String pass,
-            @Context HttpServletResponse response
-    ) throws IOException, ClassNotFoundException, SQLException{
+            //@FormParam ("account_type")String account_type,@FormParam("accounts")String account, @FormParam("")
+         
         
-        return service.addCustomer(name, add, emaail, pass);
+          
         
+            accountType = response.getQueryParameters().getFirst("account_type");
+           // if (accountType == ("Current") || accountType ==("Student") ) {
         
+               
+               
+                String insertNewAccount = "INSERT INTO accounts (customer_id,sort_code, account_type) VALUES(?,?,?)";
+              
+                Class.forName("org.apache.derby.jdbc.ClientDriver");  
+                conn = DriverManager.getConnection(url, userN, pWord);
+
+                        PreparedStatement stm = conn.prepareStatement(insertNewAccount);
+                        stm.setInt(1,customer_Id);
+                        stm.setString(2,accountType);
+                        stm.setString(3,sort_code);
+                        
+                      int rs =  stm.executeUpdate();
+                      
+                      if(rs ==1){
+
+                        return Response.status(200).entity(gson.toJson( "Account added")).build();
+                      }
+            //}
+                      else{
+                
+                      return Response.status(200).entity(gson.toJson( "Not a valid account type please enter Student or Current Account")).build();
+            }
+
+        /*
+            boolean hasC = isCurrentAccount(account);
+            boolean hasS = isSavingsAccount(account);
+        
+            if (hasC && hasS) {
+                return Response.status(200).entity(gson.toJson( "User has already a current and savings account.")).build();
+            }
+            
+             if (account_type.equals("1") && hasC) {
+                return Response.status(200).entity(gson.toJson( "User has a current account.")).build(); 
+            } else if (account_type.equals("2") && hasS) {
+                return Response.status(200).entity(gson.toJson( "User has a savings account.")).build();
+            }
+             
+                PreparedStatement st;
+                Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
+                conn = DriverManager.getConnection(url, userN, pWord);
+                st = conn.prepareStatement("SELECT * FROM accounts WHERE account_number = ?");
+                  st.setString(1, account);
+                
+                  ResultSet rs2 = st.executeQuery();
+                
+                  while (rs2.next()) {
+                    String aid = rs2.getString("customer_id");
+                    System.out.println(aid);
+               
+                    int balance = 0;
+
+                    PreparedStatement st3;
+                    st3 = conn.prepareStatement("SELECT * FROM accounts WHERE account_type = ? AND customer_id = ?");
+                    st3.setInt(1, Integer.parseInt(account_type));
+                    st3.setInt(2, Integer.parseInt(aid));
+                    
+                    
+                    
+                     ResultSet rs3 = st3.executeQuery();
+
+                    if (rs3.next()) {
+                        System.out.println(rs3.getInt("account_type"));
+                        return Response.status(200).entity(gson.toJson( "You cant add another savings account.")).build();
+                    } else {
+                        String insertNewAccount = "INSERT INTO account"
+                                + "(customer_id, account_type) VALUES"
+                                + "(?,?)";
+
+                        PreparedStatement stm = conn.prepareStatement(insertNewAccount);
+                        stm.setInt(1, Integer.parseInt(aid)); 
+                      
+                        stm.executeUpdate();
+
+                        return Response.status(200).entity(gson.toJson( "Account added")).build();
+                    }
+                */
+                
+
     }
+            
     
    @POST
    @Consumes("application/x-www-form-urlencoded")
-  // @Consumes(MediaType.MULTIPART_FORM_DATA)
-   //@Produces(MediaType.MULTIPART_FORM_DATA)
-   //@Consumes({MediaType.APPLICATION_JSON})
-    //@Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
     @Path("/createCustomer")
        public Response createCust(   @FormParam  ("name")String name,
             @FormParam ("address")String add,
             @FormParam ("email")String email,
             @FormParam ("password")String pass,@Context HttpServletResponse response) throws UnsupportedEncodingException, SQLException, ClassNotFoundException{
            
-           Gson gson = new Gson();
-           
-            
-           
-//               String name = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("name"));
-//        String email = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("email"));
-//        String address = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("address"));
-//        String password = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("password"),);
-//       // String apiKey = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("api_key"), "UTF-8");
-//        
-
        
-
 
            try{
         Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
@@ -172,17 +262,12 @@ String pWord = "Lola.1.2.3";
     } catch(Exception e){
     System.out.println(e);
 }
-  return Response.status(200).entity(gson.toJson("failed")).build();
+  return Response.status(200).entity(gson.toJson("failed to add")).build();
        
        }
            
             
-        
-    
-    
-    
-    
-           @GET
+     @GET
     @Path("/{id}")
     @Produces("application/json")
     public Response getCustomerById(@PathParam("id") int id) throws SQLException, NamingException, ClassNotFoundException {
@@ -210,9 +295,7 @@ String pWord = "Lola.1.2.3";
                 }
     }
     
-       /*  String createAccount = "INSERT INTO account"
-                        + "(sort_code, account_number,account_type, customer_id) VALUES"
-                        + "(?,?,?,?)";*/
+   
 
 
 }//end of class
