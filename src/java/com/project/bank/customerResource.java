@@ -103,11 +103,12 @@ String pWord = "Lola.1.2.3";
     }
     
     @POST
-    @Path("/addCustomer")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-   //@Consumes({MediaType.APPLICATION_JSON})
-    //@Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    @Path("/addCustomer") 
+    //   @Consumes(MediaType.MULTIPART_FORM_DATA)
+   @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public Response addCustomer( 
+            
             @FormParam ("name")String name,
             @FormParam("address")String add,
             @FormParam("email")String emaail,
@@ -120,8 +121,57 @@ String pWord = "Lola.1.2.3";
         
     }
     
- 
+   @POST
+   @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    @Path("/createCustomer")
+       public Response createCust(   @QueryParam ("name")String name,
+            @QueryParam("address")String add,
+            @QueryParam("email")String email,
+            @QueryParam("password")String pass,@Context HttpServletResponse response) throws UnsupportedEncodingException, SQLException, ClassNotFoundException{
+           
+           Gson gson = new Gson();
+           
+            
+           
+//               String name = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("name"));
+//        String email = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("email"));
+//        String address = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("address"));
+//        String password = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("password"),);
+//       // String apiKey = java.net.URLDecoder.decode(info.getQueryParameters().getFirst("api_key"), "UTF-8");
+//        
+
        
+
+
+           try{
+        Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
+        conn = DriverManager.getConnection(url, userN, pWord);
+        
+         String insertCustomer = "INSERT INTO customers"
+                        + "(name, email, address, password) VALUES"
+                        + "(?,?,?,?)";
+         
+         PreparedStatement st = conn.prepareStatement(insertCustomer);
+                st.setString(1, name);
+                st.setString(2, email);
+                st.setString(3, add);
+                st.setString(4, pass);
+              
+               int rs = st.executeUpdate();
+                
+                   if(rs ==1){
+              
+               return Response.status(200).entity(gson.toJson("Customer added")).build();
+          }
+          st.close();
+          conn.close();
+    } catch(Exception e){
+    System.out.println(e);
+}
+  return Response.status(200).entity(gson.toJson("failed")).build();
+       
+       }
            
             
         
