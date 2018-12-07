@@ -6,6 +6,7 @@
 package com.project.bank;
 
 import com.google.gson.Gson;
+import com.project.bank.objects.account;
 import com.project.bank.objects.customer;
 
 import static com.sun.corba.se.impl.presentation.rmi.StubConnectImpl.connect;
@@ -128,52 +129,35 @@ public class customerResource {
     @POST
     @Path("/addAcc")
     @Consumes("application/x-www-form-urlencoded")
-    public Response addAccount(@FormParam("account")String account) throws SQLException, ClassNotFoundException, NamingException {
+    public Response addAccount(@FormParam("numbers")int numbers) throws SQLException, ClassNotFoundException, NamingException {
 
         //@FormParam ("account_type")String account_type,@FormParam("accounts")String account, @FormParam("")
       //  accountType = response.getQueryParameters().getFirst("account_type");
         
         // if (accountType == ("Current") || accountType ==("Student") ) {
 
-        String insertNewAccount = "INSERT INTO account (account) VALUES(?)";
+        String insertNewAccount = "INSERT INTO test (numbers) VALUES(?)";
 
         Class.forName("org.apache.derby.jdbc.ClientDriver");
         conn = DriverManager.getConnection(url, userN, pWord);
 
         PreparedStatement stm = conn.prepareStatement(insertNewAccount);
-        stm.setString(1, account);
+        stm.setInt(1, numbers);
         
 
         int rs = stm.executeUpdate(); 
 
         if (rs == 1) {
 
-            return Response.status(200).entity(gson.toJson("Account added")).build();
+            return Response.status(200).entity(gson.toJson(" success")).build();
             
         } //}
         else {
 
-            return Response.status(200).entity(gson.toJson("Not a valid account type please enter Student or Current Account")).build();
+            return Response.status(200).entity(gson.toJson("failed")).build();
         }
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -280,8 +264,13 @@ public class customerResource {
     public Response createCust(@FormParam("name") String name,
             @FormParam("address") String add,
             @FormParam("email") String email,
-            @FormParam("password") String pass, @Context HttpServletResponse response) throws UnsupportedEncodingException, SQLException, ClassNotFoundException {
+            @FormParam("password") String pass,
+            @FormParam("account_type")String account_type, @Context HttpServletResponse response) throws UnsupportedEncodingException, SQLException, ClassNotFoundException {
 
+        
+           // String insertAcc ="INSERT INTO accounts(customer_id, sort_code, account_number ,account_tyoe) VALUES(?,?,?,?)";
+            
+           
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
             conn = DriverManager.getConnection(url, userN, pWord);
@@ -289,21 +278,80 @@ public class customerResource {
             String insertCustomer = "INSERT INTO customers" 
                     + "(name, email, address, password) VALUES"
                     + "(?,?,?,?)"; 
-
+ 
             PreparedStatement st = conn.prepareStatement(insertCustomer);
-            st.setString(1, name);
+            st.setString(1, name); 
             st.setString(2, email);
             st.setString(3, add);
             st.setString(4, pass);
 
-            int rs = st.executeUpdate();
+            st.executeUpdate();
+            System.out.println("inserted into customer");
+      
+            
+         int max = 0;
+        Statement statement = conn.createStatement();
+       
+         ResultSet rs2 = statement.executeQuery("SELECT max(customer_id) from customers");
+    
+        
+      if (rs2.next()) {
+  max = rs2.getInt(1);
+    return Response.status(200).entity(gson.toJson("Customer added")).build();
+            
 
-            if (rs == 1) {
+  
+}
+          //  account ts = new account();
+            
 
-                return Response.status(200).entity(gson.toJson("Customer added")).build();
-            } 
+          //  ts.setCustomer_id(rs.getInt("customer_id"));
+          
+
+              
+        
+            
+            
+            
+            
+            
+          /*
+          Statement sto = conn.createStatement();
+      
+          ResultSet getMax = sto.executeQuery("select max(customer_Id) from customers");
+           int max = getMax.getInt("customer_id");
+        
+      //  while (getMax.next()) { }
+            */
+          
+           
+           
+
+         
+
+        
+            
+            /*
+            String insertAccount = "INSERT INTO accounts" 
+                    + "(customer_id, account_type) VALUES"
+                    + "(?,?)"; 
+              st =  conn.prepareStatement(insertAccount);
+            st.setInt(1,"customer_id");
+            st.setString(2,account_type);
+            
+            int result =  st.executeUpdate();
+              */
+              
+            
+ 
+    
+            
+           
+
+            
             st.close();
             conn.close();
+            
             
         } catch (Exception e) {
             System.out.println(e);

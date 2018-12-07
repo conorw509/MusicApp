@@ -15,9 +15,24 @@ public class account {
     
   private int accNumber;
   private  String sortCode;
+  private int customer_id;
   private Double balance;
   private  List<transaction> transactions;
 
+  
+  
+    public int getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
+    }
+
+  
+  
+  
+  
     public int getAccNumber() {
         return accNumber;
     }
