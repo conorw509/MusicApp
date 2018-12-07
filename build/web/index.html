@@ -17,16 +17,16 @@ and open the template in the editor.
         
    
         
-    
+     
        
          <h1>Add Account</h1>
-         <form action ="http://localhost:8080/Bank/webresources/customer/addAccount" method ="post">
+         <form action ="http://localhost:8080/Bank/webresources/customer/addAcc" method ="post">
             <input type ="text" name ="Customer id" placeholder="id">
-               <select name="Account Type">
+             <!--  <select name="Account Type">
     <option value="Student">Student</option>
     <option value="Current">Current</option>
 
-  </select>
+  </select>-->
   <br><br>
             
             <!-- <input type ="text" name ="Account Type" placeholder="Account Type">-->
@@ -46,6 +46,16 @@ and open the template in the editor.
                     <input type ="text" name ="email" placeholder="email">
                         <input type ="text" name ="password" placeholder="password">
                         <input type ="submit" value="save">
+            
+            
+        </form>
+         
+         
+          <h1>Delete Customer by Id</h1>
+         <form action ="http://localhost:8080/Bank/webresources/customer/deleteCustomer"method ="post">
+            <input type ="text" name ="Customer ID:" placeholder="id">
+                
+                        <input type ="submit" value="Delete">
             
             
         </form>
