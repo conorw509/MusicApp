@@ -214,7 +214,7 @@ public class customerResource {
 
             String insertAccount = "INSERT INTO account"
                     + "(customer_id, sort_code, account_type) VALUES"
-                    + "(?,2,?)";
+                    + "(?,?,?)";
 
             st = conn.prepareStatement(insertAccount);
             st.setInt(1, max);
