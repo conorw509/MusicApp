@@ -17,16 +17,23 @@ and open the template in the editor.
         
       <h1>Get Customer By Id</h1>
          <form action ="http://localhost:8080/Bank/webresources/customer" method ="post">
-            <input type ="text" name ="customer_id" placeholder="id">
+           Customer ID: <input type ="text" name ="customer_id" placeholder="id">
+          
             <input type ="submit" value="Get Customer">
              </form>
         
+       <h1>Delete Customer and Accounts By Id</h1>
+         <form action ="http://localhost:8080/Bank/webresources/customer/deleteCustomer" method ="post">
+           Customer Id: <input type ="text" name ="customer_id" placeholder="id">
+  
+            <input type ="submit" value="Delete Customer">
+             </form>
      
        
          <h1>Add Account</h1>
          <form action ="http://localhost:8080/Bank/webresources/customer/addAccount" method ="post">
-            <input type ="text" name ="customer_id" placeholder="id"> 
-            <input type ="text" name ="account_type" placeholder="Account"> 
+           Customer ID: <input type ="text" name ="customer_id" placeholder="id"> 
+           Account Type: <input type ="text" name ="account_type" placeholder="Account"> 
              <!-- <select name="Account Type">
     <option value="Student">Student</option>
     <option value="Current">Current</option>
@@ -46,11 +53,11 @@ and open the template in the editor.
          
          <h1>Add Customer</h1>
          <form action ="http://localhost:8080/Bank/webresources/customer/createCustomer" method ="post">
-            <input type ="text" name ="name" placeholder="name">
-                <input type ="text" name ="address" placeholder="address">
-                    <input type ="text" name ="email" placeholder="email">
-                        <input type ="text" name ="password" placeholder="password">
-                         <input type ="text" name ="account_type" placeholder="current/savings">
+           Name: <input type ="text" name ="name" placeholder="name">
+             Address:   <input type ="text" name ="address" placeholder="address">
+               Email:     <input type ="text" name ="email" placeholder="email">
+                  Password:      <input type ="text" name ="password" placeholder="password">
+                   Account Type:      <input type ="text" name ="account_type" placeholder="current/savings">
                      
                        
                            <!--   <input type ="text" name ="branchName" placeholder="branch">

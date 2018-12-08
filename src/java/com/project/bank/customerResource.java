@@ -105,43 +105,63 @@ public class customerResource {
     @Path("/addAccount")
     @Consumes("application/x-www-form-urlencoded")
     public Response addAccount(@FormParam("customer_id") int customer_Id, @FormParam("account_type") String accountType, @Context UriInfo response) throws SQLException, ClassNotFoundException, NamingException {
-
+System.out.println(" customerid: "+customer_Id);
+System.out.println("account type: "+accountType);
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
-            conn = DriverManager.getConnection(url, userN, pWord);
+           
+            
+            
+         
+                 
+                 
+            //Statement statement = conn.createStatement();
+           // ResultSet rs2 = statement.executeQuery
+           String findCusId =("SELECT (customer_id) from account WHERE customer_id =?");
+            conn = DriverManager.getConnection(url, userN, pWord); 
+           
+           PreparedStatement st = conn.prepareStatement(findCusId);
+                st.setInt(1, customer_Id);
+                ResultSet rs2 = st.executeQuery();
 
-            String AddAccount = "INSERT INTO account"
-                    + "(customer_id, account_type) VALUES"
-                    + "(?,?)";
+                //get customer ID from query
+            int getCustomerId = 0;
+            if (rs2.next()) {
+                getCustomerId = rs2.getInt(1);
+            }
+            
+            System.out.println(getCustomerId);
+            
+                if (getCustomerId == customer_Id) {
 
-            PreparedStatement st = conn.prepareStatement(AddAccount);
-            st.setInt(1, customer_Id);
-            st.setString(2, accountType);
+                        String addAccount = "INSERT INTO account"
+                    + "(account_type) VALUES"
+                    + "(?)";
+
+             st = conn.prepareStatement(addAccount);
+          
+            st.setString(1, accountType);
             st.executeUpdate();
 
             //inserted into accounts
-            int getCustomerId = 0;
-            Statement statement = conn.createStatement();
-            ResultSet rs2 = statement.executeQuery("SELECT (customer_id) from customers");
-
-            if (rs2.next()) {
-                getCustomerId = rs2.getInt(1);
-
-                if (getCustomerId == customer_Id) {
-
-                    return Response.status(200).entity(gson.toJson("New Account Added to Customer")).build();
-
+            
+       System.out.println(addAccount);
+          return Response.status(200).entity(gson.toJson("Added Account to Customer")).build();
+         
+            } else{
+                  return Response.status(200).entity(gson.toJson("Failed to add new Account")).build();
+  
                 }
+                
 
-            }
+       
 
-            st.close();
-            conn.close();
 
         } catch (Exception e) {
             System.out.println(e);
         }
-        return Response.status(200).entity(gson.toJson("Failed to add new Account")).build();
+        
+        return Response.status(200).entity(gson.toJson("Failed")).build();
 
     }
 
@@ -265,7 +285,7 @@ public class customerResource {
     }
 
     @POST
-   // @Path("/{id}")
+    // @Path("/{id}")
     @Consumes("application/x-www-form-urlencoded")
     @Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
 
@@ -292,10 +312,130 @@ public class customerResource {
         }
     }
 
+    // @DELETE
+    @POST
+    // @Path("/{id}")
+    @Path("/deleteCustomer")
+    @Produces("application/json")
+    public Response deleteCustomerById(@FormParam("customer_id") int id, //@FormParam("accCusId") int accountCusId, 
+            @Context UriInfo info) throws SQLException, NamingException, ClassNotFoundException {
+        Gson gson = new Gson();
+       System.out.println(id);
+        
+          try {
+
+                Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
+                conn = DriverManager.getConnection(url, userN, pWord);
+
+                //String deleteCustomer = "DELETE FROM customers JOIN account ON customer_id = customer_id";
+                String deleteCustomer = "DELETE FROM customers WHERE customer_id = ?";
+                PreparedStatement st = conn.prepareStatement(deleteCustomer);
+                st.setInt(1, id);
+             int rs =   st.executeUpdate();
+                System.out.println("deleted customerId from customer");
+
+                /*
+            
+                int accCusId = 0;
+                PreparedStatement statement = conn.prepareStatement("SELECT * FROM account WHERE customer_id = ?");
+                statement.setInt(1,id);
+             int rs=    st.executeUpdate();
+             
+        ResultSet rs1;
+       
+         
+         if (rs1.next()) {
+
+                    accCusId = rs1.getInt(1);
+
+                }
+                
+                System.out.println(rs1);
+
+      
+
+             
+               
+                String deleteAccount = "DELETE FROM account WHERE customer_id = ?";
+
+                st = conn.prepareStatement(deleteAccount);
+                st.setInt(1, accCusId);
+          
+
+                int rs = st.executeUpdate();
+                System.out.println("delete from account");
+                */
+
+                if (rs == 1) {
+
+                    return Response.status(200).entity(gson.toJson("Account Deleted")).build();
+                }
+            }
+          catch (Exception e) {
+                System.out.println(e);
+            }
+     
+            return Response.status(200).entity(gson.toJson("invalid customerId, Customer has already been removed or fields are empty")).build();
+     
+    }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /* Class.forName("org.apache.derby.jdbc.ClientDriver");
+        conn = DriverManager.getConnection(url, userN, pWord);
+
+        //String deleteCustomer = "DELETE customer_id FROM customers INNER JOIN account WHERE customers.customer_id = account.customer_id AND customers.customer_id =?";
+        String deleteCustomer = "DELETE FROM customers WHERE customer_id = ?";
+        String deleteAccount = "DELETE FROM account WHERE customer_id = ?";
+
+        PreparedStatement st = conn.prepareStatement(deleteCustomer);
+        st.setInt(1, id);
+        st.executeUpdate();
+
+        int accountCudId = 0;
+        Statement statement = conn.createStatement();
+
+        ResultSet rs2 = statement.executeQuery("SELECT * FROM account WHERE customer_id =?");
+
+        if (rs2.next()) {
+
+            accountCudId = rs2.getInt(1);
+
+        }
+
+        System.out.println(accountCudId);
+
+        PreparedStatement sto = conn.prepareStatement(deleteAccount);
+        sto.setInt(1, accountCudId);
+        int rs1 = st.executeUpdate();
+
+        if (rs1 == 1) {
+
+            return Response.status(200).entity(gson.toJson("Account has been removed")).build();
+
+        } else {
+
+            return Response.status(200).entity(gson.toJson("This account is invalid has already been removed or fields are empty")).build();
+        }*/
+
+    
+
     @DELETE
     @Path("/{id}")
     @Produces("application/json")
-    public Response deleteCustomerById(@PathParam("id") int id, @Context UriInfo info) throws SQLException, NamingException, ClassNotFoundException {
+    public Response deleteCustomerByIdNoForm(@PathParam("id") int id, @Context UriInfo info) throws SQLException, NamingException, ClassNotFoundException {
         Gson gson = new Gson();
         Class.forName("org.apache.derby.jdbc.ClientDriver");
         conn = DriverManager.getConnection(url, userN, pWord);
