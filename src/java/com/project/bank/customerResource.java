@@ -264,10 +264,12 @@ public class customerResource {
 
     }
 
-    @GET
-    @Path("/{id}")
-    @Produces("application/json")
-    public Response getCustomerById(@PathParam("id") int id) throws SQLException, NamingException, ClassNotFoundException {
+    @POST
+   // @Path("/{id}")
+    @Consumes("application/x-www-form-urlencoded")
+    @Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
+
+    public Response getCustomerById(@FormParam("customer_id") int id) throws SQLException, NamingException, ClassNotFoundException {
 
         Class.forName("org.apache.derby.jdbc.ClientDriver");
         conn = DriverManager.getConnection(url, userN, pWord);
