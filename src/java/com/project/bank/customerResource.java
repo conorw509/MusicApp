@@ -267,9 +267,10 @@ public class customerResource {
             @Context UriInfo info) throws SQLException, NamingException, ClassNotFoundException {
 
         Gson gson = new Gson();
-        System.out.println(id);
+  
 
         if (id != 0) {
+                  System.out.println("id passed in:" +id);
             try {
                 Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
                 conn = DriverManager.getConnection(url, userN, pWord);
@@ -281,11 +282,13 @@ public class customerResource {
                 st.setInt(1, id);
                 st.executeUpdate();
 
-                String getCustomerAcc = ("SELECT (customer_id) FROM account WHERE customer_id =?");
+                String getCustomerAcc = ("SELECT (customer_id) from account WHERE customer_id =?");
 
                 st = conn.prepareStatement(getCustomerAcc);
                 st.setInt(1, id);
                 ResultSet rs2 = st.executeQuery();
+                
+             
 
                 int getCustomerId = 0;
                 if (rs2.next()) {
@@ -294,7 +297,7 @@ public class customerResource {
                     getCustomerId = rs2.getInt(1);
                 }
 
-                System.out.println(getCustomerId);
+                System.out.println("got id: " +getCustomerId);
 
                 //if the id being passed is isnt the same as the one in account table or is null invalid
                 if (getCustomerId != id || id == 0) {
@@ -311,11 +314,11 @@ public class customerResource {
                 //deleted from accounts
                 System.out.println(deleteAccount);
 
-                if (rs == 1) {
+              /*  if (rs <= 1) {
 
                     return Response.status(200).entity(gson.toJson(" Customer and Accounts deleted ")).build();
 
-                }
+                }*/
 
             } catch (Exception e) {
                 System.out.println(e);
@@ -324,7 +327,7 @@ public class customerResource {
             return Response.status(200).entity(gson.toJson("Failed to delete fields were left empty")).build();
         }
 
-        return Response.status(200).entity(gson.toJson("Failed")).build();
+     return Response.status(200).entity(gson.toJson(" Customer and Accounts deleted ")).build();
 
     }
 
