@@ -107,14 +107,19 @@ public class customerResource {
     public Response addAccount(@FormParam("customer_id") int customer_Id, @FormParam("account_type") String accountType, @Context UriInfo response) throws SQLException, ClassNotFoundException, NamingException {
 System.out.println(" customerid: "+customer_Id);
 System.out.println("account type: "+accountType);
-        try {
+        
+String savings = ("savings");
+        String current = ("current");
+  if (accountType.equals(savings) || accountType.equals(current)) { 
+
+try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
            
             
             
          
                  
-                 
+               
             //Statement statement = conn.createStatement();
            // ResultSet rs2 = statement.executeQuery
            String findCusId =("SELECT (customer_id) from account WHERE customer_id =?");
@@ -135,12 +140,13 @@ System.out.println("account type: "+accountType);
                 if (getCustomerId == customer_Id) {
 
                         String addAccount = "INSERT INTO account"
-                    + "(account_type) VALUES"
-                    + "(?)";
+                    + "(customer_id,account_type) VALUES"
+                    + "(?,?)";
 
              st = conn.prepareStatement(addAccount);
-          
-            st.setString(1, accountType);
+               st.setInt(1, customer_Id);
+            st.setString(2, accountType);
+            
             st.executeUpdate();
 
             //inserted into accounts
@@ -149,7 +155,7 @@ System.out.println("account type: "+accountType);
           return Response.status(200).entity(gson.toJson("Added Account to Customer")).build();
          
             } else{
-                  return Response.status(200).entity(gson.toJson("Failed to add new Account")).build();
+                  return Response.status(200).entity(gson.toJson("Failed to add new Account customerId is invalid")).build();
   
                 }
                 
@@ -159,6 +165,10 @@ System.out.println("account type: "+accountType);
 
         } catch (Exception e) {
             System.out.println(e);
+        }
+  }    
+  else {
+            return Response.status(200).entity(gson.toJson("failed to add specify account type current or savings or some fields were left empty")).build();
         }
         
         return Response.status(200).entity(gson.toJson("Failed")).build();
