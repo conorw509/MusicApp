@@ -62,29 +62,6 @@ public class customerResource {
 
     Gson gson = new Gson();
 
-    private boolean isSavingsAccount(String accountNumber) throws SQLException, NamingException, ClassNotFoundException {
-        PreparedStatement st;
-        Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
-        conn = DriverManager.getConnection(url, userN, pWord);
-        st = conn.prepareStatement("SELECT * FROM customers AS c JOIN accounts AS a ON c.customer_id = a.customer_id WHERE account_type = 2 AND account_Id= ?");
-        st.setString(1, accountNumber);
-        ResultSet rs2 = st.executeQuery();
-        boolean isValid = rs2.next();
-        conn.close();
-        return isValid;
-    }
-
-    private boolean isCurrentAccount(String accountNumber) throws SQLException, NamingException, ClassNotFoundException {
-        PreparedStatement st;
-        Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
-        conn = DriverManager.getConnection(url, userN, pWord);
-        st = conn.prepareStatement("SELECT * FROM customers AS c JOIN accounts AS a ON c.customer_id = a.customer_id WHERE account_type = 1 AND account_Id = ?");
-        st.setString(1, accountNumber);
-        ResultSet rs2 = st.executeQuery();
-        boolean isValid = rs2.next();
-        conn.close();
-        return isValid;
-    }
 
     public customer getFromResultSet(ResultSet rs) throws SQLException {
         customer customer = new customer();
@@ -180,11 +157,16 @@ public class customerResource {
             @FormParam("address") String add,
             @FormParam("email") String email,
             @FormParam("password") String pass,
-            @FormParam("account_type") String account_type, @Context HttpServletResponse response) throws UnsupportedEncodingException, SQLException, ClassNotFoundException {
+            @FormParam("account_type") String account_type,
+            //@FormParam("branchName")String branchName,
+           // @FormParam("sortCode") int sort_code, 
+            @Context HttpServletResponse response) throws UnsupportedEncodingException, SQLException, ClassNotFoundException {
 
-        System.out.println(account_type);
+        
+        
         // String insertAcc ="INSERT INTO accounts(customer_id, sort_code, account_number ,account_tyoe) VALUES(?,?,?,?)";
         try {
+            
             Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
             conn = DriverManager.getConnection(url, userN, pWord);
 
@@ -200,7 +182,11 @@ public class customerResource {
 
             st.executeUpdate();
             System.out.println("inserted into customer");
+            
+            //customer added 
 
+            
+                   //get max value of the final row in the customer table to get the last entered customer_id
             int max = 0;
             Statement statement = conn.createStatement();
 
@@ -211,19 +197,40 @@ public class customerResource {
                 max = rs2.getInt(1);
 
             }
+            
+            System.out.println(max);
+     
+            
+             
+              /* int count = 0;
+            Statement stat = conn.createStatement();
 
-            String insertAccount = "INSERT INTO account"
-                    + "(customer_id, sort_code, account_type) VALUES"
-                    + "(?,?,?)";
+            ResultSet rs3 = stat.executeQuery("select count (*) from branch where SORT_CODE = ?");
+
+            if (rs3.next()) {
+                
+                count = rs3.getInt(1);
+
+            }
+            */
+              
+            
+           // System.out.println(count);
+            
+           //sort code found in branch table
+             // if(count !=0){
+             
+             
+             
+                    
+             //when max is found we are inserting that into the account table this makes relationship for customer to account so account is added and customer
+            String insertAccount = "INSERT INTO account(customer_id, account_type) VALUES(?,?)";
 
             st = conn.prepareStatement(insertAccount);
             st.setInt(1, max);
-            System.out.println(+max);
-            
+           // st.setInt(2,sort_code);
             st.setString(2, account_type); 
             
-            System.out.println("line 221"+account_type);
-
             int rs = st.executeUpdate();
             System.out.println("inserted into account");
 
@@ -232,8 +239,35 @@ public class customerResource {
                 return Response.status(200).entity(gson.toJson("Customer added and Account Created")).build();
             }
 
-            st.close();
-            conn.close();
+           
+              //  }
+                
+              /*  else{
+                    
+                         String insertAccount = "INSERT INTO account(customer_id, sort_code, account_type) VALUES(?,?,?)";
+
+            st = conn.prepareStatement(insertAccount);
+            st.setInt(1, max);
+            st.setInt(2,sort_code);
+            st.setString(3, account_type); 
+            
+           
+
+            st.executeUpdate();
+           
+            
+            
+             String insertBranch = "INSERT INTO branch(branch_name) VALUES(?)";
+             st = conn.prepareStatement(insertBranch);
+             st.setString(1, branchName);
+           
+                 st.executeUpdate();
+            
+     //insetred into branch                
+                
+                } */
+              
+              
 
         } catch (Exception e) {
             System.out.println(e);
@@ -241,6 +275,7 @@ public class customerResource {
         return Response.status(200).entity(gson.toJson("failed to add")).build();
 
     }
+    
 
     @GET
     @Path("/{id}")
