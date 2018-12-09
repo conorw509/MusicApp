@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -71,8 +72,6 @@ public class transactionResource {
 
         return arr;
     }
-    
-    
    
     
      @GET
@@ -86,7 +85,7 @@ public class transactionResource {
         conn = DriverManager.getConnection(url, userN, pWord);
         Statement st = conn.createStatement();
         //query joins two tables account and customers displays all customers by customer id in account and customers table
-        ResultSet rs = st.executeQuery("SELECT * FROM transactions");
+        ResultSet rs = st.executeQuery("SELECT * FROM transactions1");
 
         while (rs.next()) {
             transaction ts = new transaction();
@@ -173,9 +172,46 @@ public class transactionResource {
     }
     
     
+     @Path("/getbalance")
+    @POST
+    @Consumes("application/x-www-form-urlencoded") //done
+    @Produces({javax.ws.rs.core.MediaType.TEXT_PLAIN})
+
+    public Response getAccountBal(@FormParam("account_id") int id) throws SQLException, NamingException, ClassNotFoundException {
+
+        Class.forName("org.apache.derby.jdbc.ClientDriver");
+        conn = DriverManager.getConnection(url, userN, pWord);
+        Gson gson = new Gson();
+
+        String er = "Error The account has been removed,doesnt exist or you have not made a transaction";
+        String verifyAPI = "SELECT balance FROM transactions1 WHERE account_id = ?";
+        PreparedStatement st = conn.prepareStatement(verifyAPI);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+        List events = new ArrayList<>();
+        if (rs.next()) {
+            transaction acc = new transaction();
+            acc.setBalance(rs.getString("balance"));
+            events.add(acc);
+            conn.close();
+            return Response.status(200).entity(gson.toJson(events)).build();
+
+        } else {
+            return Response.status(200).entity(gson.toJson(er)).build();
+        }
+    }
     
     
     
     
     
-}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}//end of class

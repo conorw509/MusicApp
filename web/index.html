@@ -30,9 +30,16 @@ and open the template in the editor.
         
        <h1>Delete Customer and Accounts By Id</h1>
          <form action ="http://localhost:8080/Bank/webresources/customer/deleteCustomer" method ="post">
-           Customer Id: <input type ="text" name ="customer_id" placeholder="id">
+           Customer ID: <input type ="text" name ="customer_id" placeholder="id">
   
             <input type ="submit" value="Delete Customer">
+             </form>
+       
+       <h1>Get Balance of Account By Id</h1>
+         <form action ="http://localhost:8080/Bank/webresources/trans/getbalance" method ="post">
+           Account ID: <input type ="text" name ="account_id" placeholder="id">
+  
+            <input type ="submit" value="Get Balance">
              </form>
      
        
@@ -46,8 +53,9 @@ and open the template in the editor.
          
          <h1>Add Transaction</h1>
          <form action ="http://localhost:8080/Bank/webresources/customer/addAccount" method ="post">
-           Customer ID: <input type ="text" name ="customer_id" placeholder="id"> 
-           Account Type: <input type ="text" name ="account_type" placeholder="Account"> 
+           Account ID: <input type ="text" name ="account_id" placeholder="id"> 
+           Transaction Type: <input type ="text" name ="trans_type" placeholder="withdraw/lodgment"> 
+           Amount: <input type ="text" name ="amount" placeholder="amount"> 
   <br><br>
                         <input type ="submit" value="Add">
              </form>
