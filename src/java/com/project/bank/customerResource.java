@@ -8,6 +8,7 @@ package com.project.bank;
 import com.google.gson.Gson;
 import com.project.bank.objects.account;
 import com.project.bank.objects.customer;
+import com.project.bank.objects.transaction;
 
 import static com.sun.corba.se.impl.presentation.rmi.StubConnectImpl.connect;
 import java.io.IOException;
@@ -66,7 +67,7 @@ public class customerResource {
     }
 
     @GET
-    @Path("/getAllCustomers")
+    @Path("/getAllCustomers") //done
     @Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public ArrayList<customer> getAllCustomers() throws ClassNotFoundException, SQLException {
 
@@ -234,7 +235,7 @@ public class customerResource {
     }
 
     @POST
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes("application/x-www-form-urlencoded") //done
     @Produces({javax.ws.rs.core.MediaType.APPLICATION_JSON})
 
     public Response getCustomerById(@FormParam("customer_id") int id) throws SQLException, NamingException, ClassNotFoundException {
@@ -261,7 +262,7 @@ public class customerResource {
     }
 
     @POST
-    @Path("/deleteCustomer")
+    @Path("/deleteCustomer") //done
     @Produces("application/json")
     public Response deleteCustomerById(@FormParam("customer_id") int id, //@FormParam("accCusId") int accountCusId, 
             @Context UriInfo info) throws SQLException, NamingException, ClassNotFoundException {
@@ -331,6 +332,8 @@ public class customerResource {
 
     }
 
+    
+    //A delete that uses path param instead of the form
     @DELETE
     @Path("/{id}")
     @Produces("application/json")

@@ -15,6 +15,12 @@ and open the template in the editor.
         <h1> Bank Application</h1>
         <a href ="http://localhost:8080/Bank/webresources/customer/getAllCustomers">get All Customers</a>
         
+          <h1> Bank Application</h1>
+        <a href ="http://localhost:8080/Bank/webresources/trans/getAllAccounts">get All Accounts</a>
+        
+          <h1> Bank Application</h1>
+        <a href ="http://localhost:8080/Bank/webresources/trans/getAllTrans">get All Transactions</a>
+        
       <h1>Get Customer By Id</h1>
          <form action ="http://localhost:8080/Bank/webresources/customer" method ="post">
            Customer ID: <input type ="text" name ="customer_id" placeholder="id">
@@ -34,20 +40,15 @@ and open the template in the editor.
          <form action ="http://localhost:8080/Bank/webresources/customer/addAccount" method ="post">
            Customer ID: <input type ="text" name ="customer_id" placeholder="id"> 
            Account Type: <input type ="text" name ="account_type" placeholder="Account"> 
-             <!-- <select name="Account Type">
-    <option value="Student">Student</option>
-    <option value="Current">Current</option>
-
-  </select>-->
   <br><br>
-            
-            <!-- <input type ="text" name ="Account Type" placeholder="Account Type">-->
-               <!-- <select name="Account Type" size="2" multiple>
-                     <option value="Student">Student</option>
-                     <option value="Current">Current</option> <select>-->
-                     
-                    
-                   
+                        <input type ="submit" value="Add">
+             </form>
+         
+         <h1>Add Transaction</h1>
+         <form action ="http://localhost:8080/Bank/webresources/customer/addAccount" method ="post">
+           Customer ID: <input type ="text" name ="customer_id" placeholder="id"> 
+           Account Type: <input type ="text" name ="account_type" placeholder="Account"> 
+  <br><br>
                         <input type ="submit" value="Add">
              </form>
          
@@ -58,11 +59,6 @@ and open the template in the editor.
                Email:     <input type ="text" name ="email" placeholder="email">
                   Password:      <input type ="text" name ="password" placeholder="password">
                    Account Type:      <input type ="text" name ="account_type" placeholder="current/savings">
-                     
-                       
-                           <!--   <input type ="text" name ="branchName" placeholder="branch">
-                              <input type ="text" name ="sortCode" placeholder="sort code">-->
-                           
                         
                         <input type ="submit" value="save">
             

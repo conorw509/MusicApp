@@ -12,12 +12,24 @@ import java.sql.Date;
  * @author conor
  */
 public class transaction {
-        private int transId;
-    private int debit;
-    private int credit;
+
+    private int transId;
+    private String trans_Type;
     private Date date;
-    private String description;
-    private int postBalance;
+    private int accountId;
+    private int amount;
+    private String balance;
+    
+    
+    
+    
+      public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
 
     public int getTransId() {
         return transId;
@@ -27,20 +39,12 @@ public class transaction {
         this.transId = transId;
     }
 
-    public int getDebit() {
-        return debit;
+    public String getTrans_Type() {
+        return trans_Type;
     }
 
-    public void setDebit(int debit) {
-        this.debit = debit;
-    }
-
-    public int getCredit() {
-        return credit;
-    }
-
-    public void setCredit(int credit) {
-        this.credit = credit;
+    public void setTrans_Type(String trans_Type) {
+        this.trans_Type = trans_Type;
     }
 
     public Date getDate() {
@@ -51,19 +55,25 @@ public class transaction {
         this.date = date;
     }
 
-    public String getDescription() {
-        return description;
+
+    public int getAmount() {
+        return amount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-    public int getPostBalance() {
-        return postBalance;
+    public String getBalance() {
+        return balance;
     }
 
-    public void setPostBalance(int postBalance) {
-        this.postBalance = postBalance;
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
+
+    
+
+  
+
 }

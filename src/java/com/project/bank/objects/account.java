@@ -13,14 +13,28 @@ import java.util.List;
  */
 public class account {
     
-  private int accNumber;
-  private  String sortCode;
+  private String account_type;
+  private  int account_Number;
   private int customer_id;
-  private Double balance;
-  private  List<transaction> transactions;
 
-  
-  
+   
+ 
+    public String getAccount_type() {
+        return account_type;
+    }
+
+    public void setAccount_type(String account_type) {
+        this.account_type = account_type;
+    }
+
+    public int getAccount_Number() {
+        return account_Number;
+    }
+
+    public void setAccount_Number(int account_Number) {
+        this.account_Number = account_Number;
+    }
+
     public int getCustomer_id() {
         return customer_id;
     }
@@ -28,44 +42,7 @@ public class account {
     public void setCustomer_id(int customer_id) {
         this.customer_id = customer_id;
     }
-
-  
-  
-  
-  
-    public int getAccNumber() {
-        return accNumber;
-    }
-
-    public void setAccNumber(int accNumber) {
-        this.accNumber = accNumber;
-    }
-
-    public String getSortCode() {
-        return sortCode;
-    }
-
-    public void setSortCode(String sortCode) {
-        this.sortCode = sortCode;
-    }
-
-    public Double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
-
-    public List<transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<transaction> transactions) {
-        this.transactions = transactions;
-    }
-    
-    
  
-    
+
+  
 }
