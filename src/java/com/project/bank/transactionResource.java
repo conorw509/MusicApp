@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
@@ -109,62 +110,115 @@ public class transactionResource {
      @POST
     @Path("/addTransaction")
     @Consumes("application/x-www-form-urlencoded")
-    public Response addAccount(@FormParam("customer_id") int customer_Id, @FormParam("account_type") String accountType, @Context UriInfo response) throws SQLException, ClassNotFoundException, NamingException {
+    public Response addTrans(@FormParam("account_id") int account_id, 
+            @FormParam("trans_type") String trans_type, 
+            @FormParam("amount") Double amount, @Context UriInfo response) throws SQLException, ClassNotFoundException, NamingException {
 
-        System.out.println(" customerid: " + customer_Id);
-        System.out.println("account type: " + accountType);
+        System.out.println("account_id: " + account_id);
+        System.out.println("trans_type type: " + trans_type);
+            System.out.println("amount: " + amount);
 
-        String savings = ("savings");
-        String current = ("current");
+        String withdraw = ("withdrawal");
+        String lodge = ("lodgment");
 
-        if (accountType.equals(savings) || accountType.equals(current)) {
+        if (trans_type.equals(withdraw) || trans_type.equals(lodge)) {
 
             try {
                 Class.forName("org.apache.derby.jdbc.ClientDriver");   //accounts.status
                 conn = DriverManager.getConnection(url, userN, pWord);
 
-                //getting customer id from account table
-                String findCusId = ("SELECT (customer_id) from account WHERE customer_id =?");
+                //getting accounr Id id from account table
+                String findCusId = ("SELECT (account_number) FROM account WHERE account_number =?");
 
                 PreparedStatement st = conn.prepareStatement(findCusId);
-                st.setInt(1, customer_Id);
+                st.setInt(1, account_id);
                 ResultSet rs2 = st.executeQuery();
 
-                int getCustomerId = 0;
+                int getAccId = 0;
                 if (rs2.next()) {
-                    //assign got customer id from account table to variable
-                    getCustomerId = rs2.getInt(1);
+                    //assign got account id from account table to variable
+                    getAccId = rs2.getInt(1);
                 }
 
-                System.out.println(getCustomerId);
-
+                System.out.println("got accout id:" +getAccId);
+               
                 //if the id being passed is isnt the same as the one in account table or is null invalid
-                if (getCustomerId != customer_Id || customer_Id == 0) {
+                if (getAccId != account_id || account_id == 0) {
 
-                    return Response.status(200).entity(gson.toJson("Failed to add new Account customerId is invalid")).build();
+                    return Response.status(200).entity(gson.toJson("Failed Account ID is invalid")).build();
 
                 }
+                
+                //Getting balance
+                  String getBal = ("SELECT max(balance) from transactions1");
+                  Statement sto = conn.createStatement();
 
-                String addAccount = "INSERT INTO account"
-                        + "(customer_id,account_type) VALUES"
-                        + "(?,?)";
+             
+                ResultSet rs3 = sto.executeQuery(getBal);
 
-                st = conn.prepareStatement(addAccount);
-                st.setInt(1, getCustomerId);
-                st.setString(2, accountType);
+                Double gotTheBal =0.0;
+                
+                if (rs3.next()) {
+                    //assign got balance to variable
+                    gotTheBal = rs3.getDouble(1);
+                }
+
+                System.out.println("got the balance:" +gotTheBal);
+
+            if((trans_type.equals(lodge))){
+             
+             Double added =0.0;
+             added =   gotTheBal + amount;
+           
+             
+            
+                
+            
+                String addLodgment = ("INSERT INTO transactions1(account_id,amount,trans_type,balance) VALUES(?,?,?,?)");
+
+                st = conn.prepareStatement(addLodgment);
+               // st.setDate(1, new Date());
+                st.setInt(1, account_id);
+                  st.setDouble(2, amount);
+                st.setString(3, trans_type);
+             
+                   st.setDouble(4, added);
 
                 st.executeUpdate();
 
-                //inserted into accounts
-                System.out.println(addAccount);
+           
 
-                return Response.status(200).entity(gson.toJson("Added Account to Customer")).build();
+                return Response.status(200).entity(gson.toJson("Lodgment made")).build();
+            }else{
+                if((trans_type.equals(withdraw))){
+                   
+                
+             Double subtract = 0.0;
+             subtract = gotTheBal - amount;
+           
+                String addLodgment = "INSERT INTO transactions1"
+                        + "(account_id,amount,trans_type,balance) VALUES"
+                        + "(?,?,?,?)";
+
+                st = conn.prepareStatement(addLodgment);
+               // st.setDate(1, new Date());
+                st.setInt(1, account_id);
+          
+                 st.setDouble(2, amount);
+                    st.setString(3, trans_type);
+                   st.setDouble(4, subtract);
+
+                st.executeUpdate();
+                   return Response.status(200).entity(gson.toJson("Withdraw made")).build();
+
+                }
+            }
 
             } catch (Exception e) {
                 System.out.println(e);
             }
         } else {
-            return Response.status(200).entity(gson.toJson("failed to add specify account type current or savings or some fields were left empty")).build();
+            return Response.status(200).entity(gson.toJson("failed to add specify transaction type withdrawal or lodgment or some fields were left empty")).build();
         }
 
         return Response.status(200).entity(gson.toJson("Failed")).build();
