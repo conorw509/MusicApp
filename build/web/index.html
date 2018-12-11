@@ -6,69 +6,25 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Bank API</title>
+        <title>Music App</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
         
         <h1> Bank Application</h1>
-        <a href ="http://localhost:8080/Bank/webresources/customer/getAllCustomers">get All Customers</a>
+        <a href ="http://localhost:8080/MusicApp/webresources/services/hello">get All Customers</a>
         
-         
-        <a href ="http://localhost:8080/Bank/webresources/trans/getAllAccounts">get All Accounts</a>
-        
-        
-        <a href ="http://localhost:8080/Bank/webresources/trans/getAllTrans">get All Transactions</a>
-        
-      <h1>Get Customer By Id</h1>
-         <form action ="http://localhost:8080/Bank/webresources/customer" method ="post">
-           Customer ID: <input type ="text" name ="customer_id" placeholder="id">
-          
-            <input type ="submit" value="Get Customer">
-             </form>
-        
-       <h1>Delete Customer and Accounts By Customer Id</h1>
-         <form action ="http://localhost:8080/Bank/webresources/customer/deleteCustomer" method ="post">
-           Customer ID: <input type ="text" name ="customer_id" placeholder="id">
-  
-            <input type ="submit" value="Delete Customer">
-             </form>
-       
-       <h1>Get Balance of Account By Id</h1>
-         <form action ="http://localhost:8080/Bank/webresources/trans/getbalance" method ="post">
-           Account ID: <input type ="text" name ="account_id" placeholder="id">
-  
-            <input type ="submit" value="Get Balance">
-             </form>
-     
-       
-         <h1>Add Account</h1>
-         <form action ="http://localhost:8080/Bank/webresources/customer/addAccount" method ="post">
-           Customer ID: <input type ="text" name ="customer_id" placeholder="id"> 
-           Account Type: <input type ="text" name ="account_type" placeholder="Account"> 
-  <br><br>
-                        <input type ="submit" value="Add">
-             </form>
-         
-         <h1>Add Transaction</h1>
-         <form action ="http://localhost:8080/Bank/webresources/trans/addTransaction" method ="post">
-           Account ID: <input type ="text" name ="account_id" placeholder="id"> 
-           Transaction Type: <input type ="text" name ="trans_type" placeholder="withdraw/lodgment"> 
-           Amount: <input type ="text" name ="amount" placeholder="amount"> 
-  <br><br>
-                        <input type ="submit" value="Add">
-             </form>
-         
-         <h1>Add Customer</h1>
-         <form action ="http://localhost:8080/Bank/webresources/customer/createCustomer" method ="post">
-           Name: <input type ="text" name ="name" placeholder="name">
-             Address:   <input type ="text" name ="address" placeholder="address">
+                <h1>Register Account</h1>
+         <form action ="http://localhost:8080/MusicApp/webresources/services/hello/register" method ="post">
+           First Name: <input type ="text" name ="fName" placeholder="First Name">
+           Last Name: <input type ="text" name ="lName" placeholder="Last Name">
                Email:     <input type ="text" name ="email" placeholder="email">
                   Password:      <input type ="text" name ="password" placeholder="password">
-                   Account Type:      <input type ="text" name ="account_type" placeholder="current/savings">
+                 Repeat Password:  <input type ="text" name ="repeatPassword" placeholder="repeatPassword">
+              
                         
-                        <input type ="submit" value="save">
+                        <input type ="submit" value="Register">
             
             
         </form>
