@@ -5,6 +5,7 @@
  */
 package com.endpoints;
 
+import com.DB.databaseConnection;
 import java.awt.HeadlessException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -28,10 +29,12 @@ import javax.ws.rs.core.Response;
 @Path("/adminServices")
 public class adminServices {
     
-     String url = "jdbc:derby://localhost:1527/bank";
-    String userN = "root";
-    String pWord = "Lola.1.2.3";
-    Connection conn = null;
+    private String url = "jdbc:derby://localhost:1527/bank";
+   private String userN = "root";
+    private String pWord = "Lola.1.2.3";
+       private    Connection con;
+          // databaseConnection db;
+        private   PreparedStatement pst;
  
     @POST
     @Path("/add")
@@ -49,10 +52,12 @@ public class adminServices {
         try{
          
             Class.forName("org.apache.derby.jdbc.ClientDriver"); 
-           conn = DriverManager.getConnection(url, userN, pWord);
+           con = DriverManager.getConnection(url, userN, pWord);
+           
+            //con = db.getConnection();
              String sql="INSERT INTO MUSIC (id,title, artist, album, genre) VALUES(?, ?, ?, ?, ?)";
-             PreparedStatement pst = conn.prepareStatement(sql);
-             pst = conn.prepareStatement(sql);
+              pst = con.prepareStatement(sql);
+             pst = con.prepareStatement(sql);
            
              pst.setInt(1, id);
              pst.setString(2, title);
@@ -115,10 +120,11 @@ public class adminServices {
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
                try{
           Class.forName("org.apache.derby.jdbc.ClientDriver");
-         conn=DriverManager.getConnection(url, userN, pWord);
+         con =DriverManager.getConnection(url, userN, pWord);
+        // con = db.getConnection();
          String sql="DELETE from MUSIC where id=?";
-         PreparedStatement pst= conn.prepareStatement(sql);
-         pst = conn.prepareStatement(sql);
+         PreparedStatement pst= con.prepareStatement(sql);
+         pst = con.prepareStatement(sql);
          pst.setInt(1, id);
          pst.executeUpdate();
          return Response.status(Response.Status.OK).entity("deleted").build();
