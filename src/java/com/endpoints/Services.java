@@ -41,7 +41,7 @@ import javax.ws.rs.core.UriInfo;
 @Path("/services")
 public class Services {
   
- private databaseConnection conn;
+ private Connection conn;
 
     @POST
     @Path("/register")
@@ -145,7 +145,7 @@ public class Services {
                         
             
 
-            int resgistered = userController.createAccount(user);
+            int resgistered = userController.createAccount(user); 
 
             if (resgistered > 0) {
             
@@ -232,7 +232,8 @@ public class Services {
         
     return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
     }
+
     
-       
+    
   
 }//end of class

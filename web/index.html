@@ -59,19 +59,21 @@ and open the template in the editor.
             
             
                 <h1>Admin Configure</h1>
-         <form action ="http://localhost:8080/MusicApp/webresources/services/adminLogin" method ="post">
+        
+                <form  method ="post">
      
         
-                  Id:       <input type ="text" name ="id" placeholder="id">
+              
                        Title:  <input type ="text" name ="title" placeholder="title">
                   Artist:  <input type ="text" name ="artist" placeholder="artist">
                      Album:       <input type ="text" name ="album" placeholder="album">
                   Genre:  <input type ="text" name ="genre" placeholder="genre">
                  
                         
-                  <input type ="submit" value="Add">
-                  <input type ="submit" value="Update">
-                  <input type ="submit" value="Delete">
+                  <input type ="submit" value="Add" formaction="http://localhost:8080/MusicApp/webresources/adminServices/add">
+                  <input type ="submit" value="Update" formaction="/update">
+                  <input type ="submit" value="Delete" formaction="/delete">
+                  
               </form>
       
          

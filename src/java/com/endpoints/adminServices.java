@@ -28,36 +28,36 @@ import javax.ws.rs.core.Response;
 @Path("/adminServices")
 public class adminServices {
     
-     private String url;
- private String username;
- private String password;
-     
+     String url = "jdbc:derby://localhost:1527/bank";
+    String userN = "root";
+    String pWord = "Lola.1.2.3";
+    Connection conn = null;
  
     @POST
     @Path("/add")
     @Consumes("application/x-www-form-urlencoded")
     public Response addMusic(       
-      @FormParam("id") int id, 
+    
       @FormParam("title") String title, 
       @FormParam("artist") String artist, 
       @FormParam("album") String album, 
       @FormParam("genre") String genre,
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
             
-          url = "jdbc:derby://localhost:1527/bank";
-        username = "root";
-        password = "Lola.1.2.3";
+    
              
         try{
-             Connection connect=DriverManager.getConnection(url, username, password);
-             String sql="INSERT INTO musicList (id, title, artist, album, genre) VALUES(?, ?, ?, ?, ?)";
-             PreparedStatement pst=connect.prepareStatement(sql);
-             pst = connect.prepareStatement(sql);
-             pst.setInt(1, id);
-             pst.setString(2, title);
-             pst.setString(3, artist);
-             pst.setString(4,album);
-             pst.setString(5, genre);        
+         
+            Class.forName("org.apache.derby.jdbc.ClientDriver"); 
+           conn = DriverManager.getConnection(url, userN, pWord);
+             String sql="INSERT INTO MUSCICLIST (title, artist, album, genre) VALUES(?, ?, ?, ?)";
+             PreparedStatement pst = conn.prepareStatement(sql);
+             pst = conn.prepareStatement(sql);
+            
+             pst.setString(1, title);
+             pst.setString(2, artist);
+             pst.setString(3,album);
+             pst.setString(4, genre);        
              pst.executeUpdate();
             
               return Response.status(Response.Status.UNAUTHORIZED).entity("Added").build();
@@ -74,7 +74,7 @@ public class adminServices {
     @Path("/update")
     @Consumes("application/x-www-form-urlencoded")
     public Response updateMusic(       
-      @FormParam("id") int id, 
+
       @FormParam("title") String title, 
       @FormParam("artist") String artist, 
       @FormParam("album") String album, 
@@ -82,15 +82,15 @@ public class adminServices {
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
                  
         try{
-             Connection connect=DriverManager.getConnection(url, username, password);
-             String sql="UPDATE musicList set(id, title, artist, album, genre) VALUES(?, ?, ?, ?, ?)";
-             PreparedStatement pst=connect.prepareStatement(sql);
-             pst = connect.prepareStatement(sql);
-             pst.setInt(1, id);
-             pst.setString(2, title);
-             pst.setString(3, artist);
-             pst.setString(4,album);
-             pst.setString(5, genre);        
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+             conn=DriverManager.getConnection(url, userN, pWord);
+             String sql="UPDATE MUSCICLIST set(id, title, artist, album, genre) VALUES(?, ?, ?, ?, ?)";
+             PreparedStatement pst=conn.prepareStatement(sql);
+             pst = conn.prepareStatement(sql);
+              pst.setString(1, title);
+             pst.setString(2, artist);
+             pst.setString(3,album);
+             pst.setString(4, genre);          
              pst.executeUpdate();
             
               return Response.status(Response.Status.OK).entity("updated").build();
@@ -102,7 +102,7 @@ public class adminServices {
     }
     
    
-          @POST
+     @POST
     @Path("/delete")
     @Consumes("application/x-www-form-urlencoded")
     public Response deleteMusic(       
@@ -113,10 +113,11 @@ public class adminServices {
       @FormParam("genre") String genre,
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
                try{
-         Connection connect=DriverManager.getConnection(url, username, password);
-         String sql="DELETE from movies where id=?";
-         PreparedStatement pst=connect.prepareStatement(sql);
-         pst = connect.prepareStatement(sql);
+          Class.forName("org.apache.derby.jdbc.ClientDriver");
+         conn=DriverManager.getConnection(url, userN, pWord);
+         String sql="DELETE from MUSCICLIST where id=?";
+         PreparedStatement pst= conn.prepareStatement(sql);
+         pst = conn.prepareStatement(sql);
          pst.setInt(1, id);
          pst.executeUpdate();
          return Response.status(Response.Status.OK).entity("deleted").build();
