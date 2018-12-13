@@ -6,6 +6,7 @@
 package com.endpoints;
 
 
+import com.Controllers.controllerAdmin;
 import com.Controllers.controllerUser;
 import com.DB.databaseConnection;
 import com.model.User;
@@ -218,7 +219,34 @@ public class Services {
     }
     
     
+    @POST
+    @Path("/adminLogin")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response adminLogin( 
+      @FormParam("email") String email, 
+      @FormParam("password") String password, 
+      @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
+           
+        User u = new User();
+        u.setEmail(email);
+        u.setPassword(password);
     
+        controllerAdmin ac = new controllerAdmin(); 
+        
+        boolean adminLog = ac.checkLogin(u);
+        if (adminLog) {
+           servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminLog.html");
+           
+        } 
+        
+        else {
+           
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Either email or password is wrong Incorrect details").build();
+            
+        } 
+        
+    return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
+    }
     
     
 }//end of class
