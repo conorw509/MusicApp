@@ -17,16 +17,18 @@ public class PasswordEncrypt {
 
 private final static String SALT = "your_salt_string_here";
 
+//passing in password
 public static String encryptPassword(String password) {
     String result = null;
     MessageDigest md;
 
     try {
+        // usng SHA-1 algorithm passing using the message digest to digest byte size data 
         md = MessageDigest.getInstance("SHA-1");
-        byte[] hash1 = md.digest(password.getBytes());
+        byte[] hash1 = md.digest(password.getBytes()); //first password
 
         md.reset();
-        byte[] hash2 = md.digest(hash1);
+        byte[] hash2 = md.digest(hash1); //2nd password
 
         md.reset();
         md.update(SALT.getBytes());

@@ -7,6 +7,7 @@ package com.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -45,6 +46,10 @@ public class databaseConnection {
         }
         
         return con;
+    }
+
+    public PreparedStatement prepareStatement(String email) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

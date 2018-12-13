@@ -85,4 +85,36 @@ public class controllerUser {
     
     
     
+    
+        public boolean checkEmail(User u) {
+        
+        String sql = "";
+        ResultSet rs = null;
+        
+        try {
+            sql = "SELECT * FROM users WHERE email = ?";
+            pst = con.prepareStatement(sql);
+            
+            pst.setString(1, u.getEmail());
+            
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                return true;
+            } 
+            else {
+                return false;
+            }
+            
+            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        
+        return false;
+    }
+    
+    
+    
 }

@@ -7,8 +7,12 @@ package com.endpoints;
 
 
 import com.Controllers.controllerUser;
+import com.DB.databaseConnection;
 import com.model.User;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 import javax.naming.NamingException;
@@ -33,7 +37,8 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("/services")
 public class Services {
-
+  
+ private databaseConnection conn;
     
     
         @GET
@@ -61,47 +66,41 @@ public class Services {
        
         
               boolean valid = true;
+               controllerUser userController = new controllerUser();
+              
         // name decloaration                 
         if (fName.length() > 15 || fName.length() < 3){
-            //JOptionPane.showMessageDialog(null, "Please enter a valid First Name", "Incorrect details", JOptionPane.ERROR_MESSAGE);
-        
             valid = false;
                return Response.status(Response.Status.UNAUTHORIZED).entity("Please enter a valid First Name, Incorrect details").build();
         }
         
         if(fName.equals("")){
-            //JOptionPane.showMessageDialog(null, "Name can't be empty", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
                return Response.status(Response.Status.UNAUTHORIZED).entity("\"Name can't be empty\", \"Incorrect details").build();
         }
         
         if (lName.length() > 20 || lName.length() < 3){
-          //  JOptionPane.showMessageDialog(null, "Please enter a valid Last name", "Incorrect details", JOptionPane.ERROR_MESSAGE);
-            valid = false;
+           valid = false;
             return Response.status(Response.Status.UNAUTHORIZED).entity("Please enter a valid Last name,Incorrect details").build();
         }
         
         if(lName.equals("")){
-           // JOptionPane.showMessageDialog(null, "Last name can't be empty", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
              return Response.status(Response.Status.UNAUTHORIZED).entity("Please enter a valid Last name,Incorrect details").build();
         }
         //Declaraction of email //using patterns for regegular expression
         if (!(Pattern.matches("^[a-zA-Z0-9-_.]+[@]{1}+[gmail]{5}+[.]{1}+[com]{3}+$", email))){
-           // JOptionPane.showMessageDialog(null, "Please enter a Gmail email address", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
             return Response.status(Response.Status.UNAUTHORIZED).entity("Please enter a Gmail email address, Incorrect details").build();
         }
         //Declaraction of password / repeat password
         if(password.length() > 15 || password.length() < 8){
-          //  JOptionPane.showMessageDialog(null, "Password should be less than 15 and more than 8 characters in length.", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
              return Response.status(Response.Status.UNAUTHORIZED).entity("Password should be less than 15 and more than 8 characters in length. Incorrect details").build();
         
         }
         
         if(password.contains(fName)){
-            //JOptionPane.showMessageDialog(null, "Password Should not contain same words as your name", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
              return Response.status(Response.Status.UNAUTHORIZED).entity("Password Should not contain same words as your name,Incorrect details").build();
         
@@ -110,7 +109,6 @@ public class Services {
         //more regular expression
         String upperCaseChars = "(.*[A-Z].*)";
         if(!password.matches(upperCaseChars )){
-           // JOptionPane.showMessageDialog(null, "Password should contain atleast one upper case alphabet", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
             return Response.status(Response.Status.UNAUTHORIZED).entity("Password should contain atleast one upper case alphabet, Incorrect details").build();
         
@@ -118,7 +116,6 @@ public class Services {
         
         String lowerCaseChars = "(.*[a-z].*)";
         if(!password.matches(lowerCaseChars )){
-           // JOptionPane.showMessageDialog(null, "Password should contain atleast one lower case alphabet", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
              return Response.status(Response.Status.UNAUTHORIZED).entity("Password should contain atleast one lower case alphabet, Incorrect details").build();
         
@@ -126,21 +123,44 @@ public class Services {
         
         String numbers = "(.*[0-9].*)";
         if (!password.matches(numbers )){
-           // JOptionPane.showMessageDialog(null, "Password should contain atleast one number.", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
              return Response.status(Response.Status.UNAUTHORIZED).entity("Password should contain atleast one number. Incorrect details").build();
         
         }
         
         if (!password.matches(repeatPassword)){
-           // JOptionPane.showMessageDialog(null, "Passwords dont match.", "Incorrect details", JOptionPane.ERROR_MESSAGE);
             valid = false;
             return Response.status(Response.Status.UNAUTHORIZED).entity("Passwords dont match. Incorrect details").build();
         
         }
         
+        //get email checking for email in users table
+       /* String getEmail = ("SELECT * FROM users WHERE email =?");
+        
+         PreparedStatement st = conn.prepareStatement(getEmail);
+                st.setString(1, email);
+                ResultSet rs2 = st.executeQuery();
+
+                String getEmailI = " ";
+                if (rs2.next()) {
+                   
+                    //assign got customer id from account table to variable
+                    getEmailI = rs2.getString(1);
+                }
+                System.out.println(getEmailI);*/
+    
+       User user = new User();
+       user.setEmail(email);
+       boolean getEmail = userController.checkEmail(user);
+                
+                if(getEmail){
+                         
+                    return Response.status(Response.Status.UNAUTHORIZED).entity("Email Already Exists. Incorrect details").build();
+                }
+                
+                
         if(valid){
-            User user = new User();
+         
             user.setID(0);
             user.setName(fName);
             user.setLastname(lName);
@@ -148,18 +168,17 @@ public class Services {
             user.setPassword(password);
             user.setRepassword(repeatPassword);
                         
-             controllerUser userController = new controllerUser();
+            
 
             int resgistered = userController.createAccount(user);
 
             if (resgistered > 0) {
-              //  JOptionPane.showMessageDialog(null, "You have been Registered");
-               servletResponse.sendRedirect("Logged.html"); //example
+            
+                servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn.html"); //example
            
             }
             else {
-               // JOptionPane.showMessageDialog(null, "Email is already taken", "Incorrect details", JOptionPane.ERROR_MESSAGE);
-                 return Response.status(Response.Status.UNAUTHORIZED).entity("Email is already taken").build();
+                 return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
             }
         }
             return null;
@@ -167,7 +186,36 @@ public class Services {
           
     }
     
-    
+   @POST
+    @Path("/userLogin")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response userLogin(
+      
+      @FormParam("email") String email, 
+      @FormParam("password") String password, 
+      @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
+           
+        User u = new User();
+        u.setEmail(email);
+        u.setPassword(password);
+        
+        controllerUser userController = new controllerUser();
+        
+        boolean log = userController.checkLogin(u);
+        
+        if (log) {
+              
+            servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn.html");
+              
+            
+        } else {
+           
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Either email or password is wrong Incorrect details").build();
+            
+        } 
+        
+    return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
+    }
     
     
     
