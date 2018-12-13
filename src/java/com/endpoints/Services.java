@@ -10,8 +10,10 @@ import com.Controllers.controllerAdmin;
 import com.Controllers.controllerUser;
 import com.DB.databaseConnection;
 import com.model.User;
+import java.awt.HeadlessException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,20 +42,7 @@ import javax.ws.rs.core.UriInfo;
 public class Services {
   
  private databaseConnection conn;
-    
-    
-        @GET
-    @Path("/hello")
-    @Produces("application/Json")
-    
-    public Response hello(){
-        
-      return Response.ok().entity("hello").build();
-        
-    }
-    
-    
-    
+
     @POST
     @Path("/register")
     @Consumes("application/x-www-form-urlencoded")
@@ -134,21 +123,6 @@ public class Services {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Passwords dont match. Incorrect details").build();
         
         }
-        
-        //get email checking for email in users table
-       /* String getEmail = ("SELECT * FROM users WHERE email =?");
-        
-         PreparedStatement st = conn.prepareStatement(getEmail);
-                st.setString(1, email);
-                ResultSet rs2 = st.executeQuery();
-
-                String getEmailI = " ";
-                if (rs2.next()) {
-                   
-                    //assign got customer id from account table to variable
-                    getEmailI = rs2.getString(1);
-                }
-                System.out.println(getEmailI);*/
     
        User user = new User();
        user.setEmail(email);
@@ -196,6 +170,11 @@ public class Services {
       @FormParam("password") String password, 
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
            
+        if(email.equals("") || password.equals("")){
+        
+               return Response.status(Response.Status.UNAUTHORIZED).entity("Fields Can't be Empty").build();
+        }
+        
         User u = new User();
         u.setEmail(email);
         u.setPassword(password);
@@ -227,13 +206,18 @@ public class Services {
       @FormParam("password") String password, 
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
            
+           if(email.equals("") || password.equals("")){
+        
+               return Response.status(Response.Status.UNAUTHORIZED).entity("Fields Can't be Empty").build();
+        }
+           
         User u = new User();
         u.setEmail(email);
         u.setPassword(password);
     
         controllerAdmin ac = new controllerAdmin(); 
         
-        boolean adminLog = ac.checkLogin(u);
+        boolean adminLog = ac.checkLogin(u); 
         if (adminLog) {
             
            servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn1.html");
@@ -249,5 +233,6 @@ public class Services {
     return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
     }
     
-    
+       
+  
 }//end of class
