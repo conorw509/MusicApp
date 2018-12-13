@@ -37,7 +37,7 @@ public class adminServices {
     @Path("/add")
     @Consumes("application/x-www-form-urlencoded")
     public Response addMusic(       
-    
+      @FormParam("id") int id, 
       @FormParam("title") String title, 
       @FormParam("artist") String artist, 
       @FormParam("album") String album, 
@@ -50,14 +50,15 @@ public class adminServices {
          
             Class.forName("org.apache.derby.jdbc.ClientDriver"); 
            conn = DriverManager.getConnection(url, userN, pWord);
-             String sql="INSERT INTO MUSCICLIST (title, artist, album, genre) VALUES(?, ?, ?, ?)";
+             String sql="INSERT INTO MUSIC (id,title, artist, album, genre) VALUES(?, ?, ?, ?, ?)";
              PreparedStatement pst = conn.prepareStatement(sql);
              pst = conn.prepareStatement(sql);
-            
-             pst.setString(1, title);
-             pst.setString(2, artist);
-             pst.setString(3,album);
-             pst.setString(4, genre);        
+           
+             pst.setInt(1, id);
+             pst.setString(2, title);
+             pst.setString(3, artist);
+             pst.setString(4,album);
+             pst.setString(5, genre);        
              pst.executeUpdate();
             
               return Response.status(Response.Status.UNAUTHORIZED).entity("Added").build();
@@ -69,7 +70,7 @@ public class adminServices {
     }
     
      
-    
+    /*
        @POST
     @Path("/update")
     @Consumes("application/x-www-form-urlencoded")
@@ -84,7 +85,7 @@ public class adminServices {
         try{
             Class.forName("org.apache.derby.jdbc.ClientDriver");
              conn=DriverManager.getConnection(url, userN, pWord);
-             String sql="UPDATE MUSCICLIST set(id, title, artist, album, genre) VALUES(?, ?, ?, ?, ?)";
+             String sql="UPDATE MUSCICLIST set(id,title, artist, album, genre) VALUES(?, ?, ?, ?)";
              PreparedStatement pst=conn.prepareStatement(sql);
              pst = conn.prepareStatement(sql);
               pst.setString(1, title);
@@ -99,7 +100,7 @@ public class adminServices {
               e.getMessage();
            }
                   return Response.status(Response.Status.FORBIDDEN).entity("failed").build();
-    }
+    }*/
     
    
      @POST
@@ -115,7 +116,7 @@ public class adminServices {
                try{
           Class.forName("org.apache.derby.jdbc.ClientDriver");
          conn=DriverManager.getConnection(url, userN, pWord);
-         String sql="DELETE from MUSCICLIST where id=?";
+         String sql="DELETE from MUSIC where id=?";
          PreparedStatement pst= conn.prepareStatement(sql);
          pst = conn.prepareStatement(sql);
          pst.setInt(1, id);

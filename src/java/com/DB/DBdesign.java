@@ -33,8 +33,8 @@ PRIMARY KEY (id)
 
 INSERT INTO admin(`id`, `name`, `lastname`, `email`, `password`, `repassword`) VALUES (1000, 'Conor', 'Ward', 'Cadmin@hotmail.com', 'c9bec8c464d5a762d8cefa81997ffe968f7ffb5c', 'c9bec8c464d5a762d8cefa81997ffe968f7ffb5c');
 
-CREATE TABLE muscicList(
-id int GENERATED ALWAYS AS IDENTITY (START WITH 15789, INCREMENT BY 1),
+CREATE TABLE music(
+id int,
 title varchar(255),
 artist  varchar(255),
 album varchar(255),
