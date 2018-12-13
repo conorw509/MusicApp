@@ -6,11 +6,31 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>ADMIN</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-           <h1>TEST ADMIN LOGIN SUCCESSFULL!</h1>
+           <h1> ADMIN PAGE</h1>
+           
+           
+           
+               <h1>Admin Configure</h1>
+        
+                <form  method ="post">
+     
+        
+              ID:  <input type ="text" name ="id" placeholder="id">
+                       Title:  <input type ="text" name ="title" placeholder="title">
+                  Artist:  <input type ="text" name ="artist" placeholder="artist">
+                     Album:       <input type ="text" name ="album" placeholder="album">
+                  Genre:  <input type ="text" name ="genre" placeholder="genre">
+                 
+                        
+                  <input type ="submit" value="Add" formaction="http://localhost:8080/MusicApp/webresources/adminServices/add">
+                  <input type ="submit" value="Delete" formaction="http://localhost:8080/MusicApp/webresources/adminServices/delete">
+             
+                  
+              </form>
     </body>
 </html>
