@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>web/WEB-INF/adminLog.html</url>
+            <bookmark id="1">
+                <name/>
+                <line>0</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/conor/Desktop/SecureProgramming%20Music%20Project/web/loggedIn.html</file>
+            <file>file:/C:/Users/conor/Desktop/SecureProgramming%20Music%20Project/web/WEB-INF/loggedIn1.html</file>
+            <file>file:/C:/Users/conor/Desktop/SecureProgramming%20Music%20Project/web/index.html</file>
+            <file>file:/C:/Users/conor/Desktop/SecureProgramming%20Music%20Project/src/java/com/endpoints/Services.java</file>
+        </group>
     </open-files>
 </project-private>
