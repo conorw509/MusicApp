@@ -35,7 +35,7 @@ import javax.ws.rs.core.UriInfo;
 
 
 /**
- * hello
+ * Test
  * @author conor 
  */
 @Path("/services")
