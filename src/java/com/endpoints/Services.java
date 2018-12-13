@@ -235,7 +235,8 @@ public class Services {
         
         boolean adminLog = ac.checkLogin(u);
         if (adminLog) {
-           servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminLog.html");
+            
+           servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn1.html");
            
         } 
         
