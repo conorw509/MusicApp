@@ -14,14 +14,15 @@
   </head>
 <body id="LoginForm">
 <div class="container">
-<form id="Login">
+
+     <form  method ="post">
     <div class="main-div">
     <div class="panel">
    <h2>Admin Panel!</h2>
    <p>Please fill in the following details to add.</p>
    </div>
   <div class="form-group">
-        <input type="text" class="form-control" name="id" placeholder="ID">
+        <input type="text" class="form-control" name="id" placeholder="ID"> 
         </div>
          <div class="form-group">
         <input type="text" class="form-control" name="title" placeholder="Title">
@@ -34,11 +35,12 @@
             <br>
             <input type="text" class="form-control" placeholder="Genre" name="genre">
         </div>
+                 <input type ="submit" value="Add" formaction="http://localhost:8080/MusicApp/webresources/adminServices/add">
+                  <input type ="submit" value="Delete" formaction="http://localhost:8080/MusicApp/webresources/adminServices/delete">
        
       <!--  <button type="submit" class="btn btn-primary" onclick="return Validation()">Login</button>-->
       
-            <input type ="submit" value="Add" formaction="http://localhost:8080/MusicApp/webresources/adminServices/add">
-                  <input type ="submit" value="Delete" formaction="http://localhost:8080/MusicApp/webresources/adminServices/delete">
+   
         
     </form>
 </div>
