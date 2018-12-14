@@ -38,6 +38,7 @@ public class adminServices {
        private    Connection con;
           // databaseConnection db;
         private   PreparedStatement pst;
+        
  
     @POST
     @Path("/add")

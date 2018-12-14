@@ -150,7 +150,7 @@ public class Services {
 
             if (resgistered > 0) {
             
-                servletResponse.sendRedirect("http://localhost:8080/MusicApp/userPanle.html"); //example
+                servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn1.html");
            
             }
             else {
@@ -187,7 +187,7 @@ public class Services {
         
         if (log) {
               
-            servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn.html");
+            servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn1.html");
               
             
         } else {
@@ -226,7 +226,8 @@ public class Services {
         boolean adminLog = ac.checkLogin(u); 
         if (adminLog) {
             
-           servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn1.html");
+            
+           servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.html");
            
         } 
         
