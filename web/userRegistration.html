@@ -1,0 +1,61 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+<html>
+  <head>
+   <link href="style.css" rel="stylesheet" type="text/css"/>
+   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   
+   <script type="text/javascript">
+     function Validation(){
+         var password = document.getElementById("confirm_password").value;
+         var confirm_password = document.getElementById("password").value;
+         if(password != confirmPassword){
+             alert("Dont Match");
+             return false;
+           
+         }
+         return true;
+     }
+    </script>
+<!------ Include the above in your HEAD tag ---------->
+  </head>
+<body id="LoginForm">
+<div class="container">
+<div class="login-form">
+<div class="main-div">
+    <div class="panel">
+   <h2>User Registration</h2>
+   <p>Please enter your details to register</p>
+   </div>
+         <form action ="http://localhost:8080/MusicApp/webresources/services/register" method ="post">
+  <div class="form-group">
+        <input type="text" class="form-control" name="fName" placeholder="First Name">
+        </div>
+         <div class="form-group">
+        <input type="text" class="form-control" name="lName"  placeholder="Last Name">
+        </div>
+        <div class="form-group">
+        <input type="email" class="form-control" name="email" placeholder="Enter your email"> 
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="password" placeholder="Password">
+            <br>
+            <input type="text" class="form-control" placeholder="Confirm Password" name="repeatPassword">
+        </div>
+        <div class="forgot">
+        <a href="reset.html">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="return Validation()">Login</button>
+    </form>
+    </div>
+</div></div>
+
+
+</body>
+</html>

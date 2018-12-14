@@ -58,17 +58,18 @@ public class Services {
               boolean valid = true;
                controllerUser userController = new controllerUser();
               
-        // name decloaration                 
+        // if name   is greater than 15 and less than 3             
         if (fName.length() > 15 || fName.length() < 3){
             valid = false;
                return Response.status(Response.Status.UNAUTHORIZED).entity("Please enter a valid First Name, Incorrect details").build();
         }
-        
+        //if name is blank 
         if(fName.equals("")){
             valid = false;
                return Response.status(Response.Status.UNAUTHORIZED).entity("\"Name can't be empty\", \"Incorrect details").build();
         }
         
+        //if last name is greater than 
         if (lName.length() > 20 || lName.length() < 3){
            valid = false;
             return Response.status(Response.Status.UNAUTHORIZED).entity("Please enter a valid Last name,Incorrect details").build();
@@ -149,13 +150,14 @@ public class Services {
 
             if (resgistered > 0) {
             
-                servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn.html"); //example
+                servletResponse.sendRedirect("http://localhost:8080/MusicApp/userPanle.html"); //example
            
             }
             else {
                  return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
             }
         }
+        
             return null;
            
           
@@ -205,6 +207,10 @@ public class Services {
       @FormParam("email") String email, 
       @FormParam("password") String password, 
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
+        
+        System.out.println(email);
+         System.out.println(password);
+        
            
            if(email.equals("") || password.equals("")){
         

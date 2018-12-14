@@ -8,15 +8,18 @@ package com.endpoints;
 import com.DB.databaseConnection;
 import java.awt.HeadlessException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.JOptionPane;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
@@ -71,7 +74,7 @@ public class adminServices {
            catch(HeadlessException | SQLException e){
               e.getMessage();
            }
-     return Response.status(Response.Status.FORBIDDEN).entity("failed").build();
+     return Response.status(Response.Status.FORBIDDEN).entity("failed, Id already exists").build();
     }
     
      
@@ -137,4 +140,38 @@ public class adminServices {
                   return Response.status(Response.Status.FORBIDDEN).entity("failed").build();
     }
     
+     @GET
+    @Path("/view")
+    protected void viewData(@Context HttpServletResponse response) throws ClassNotFoundException, SQLException, IOException{
+                  
+       response.setContentType("text/html");
+       PrintWriter out = response.getWriter();
+       Class.forName("org.apache.derby.jdbc.ClientDriver");
+       con =DriverManager.getConnection(url, userN, pWord);
+          
+        
+        try{
+        
+     
+            String sql= ("SELECT id,title,artist,album,genre FROM music");
+            pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            String table ="<table><tr>/<th> Id </th><th>Title </th> <th> Artist</th> <th> Album</th> <th> Genre</th> </tr></table>";
+            
+            while(rs.next()){
+            table = "<tr><td>" + rs.getString(1)+ "</td><td>"  + rs.getString(2)+ "</td><td>"   + rs.getString(3)+  "</td><td>"
+                    + rs.getString(4)+ "</td><td>"+ rs.getString(5)+  "</td> </tr>";
+               
+            
+        }
+            table += "</table>";
+            out.println(table);
+            con.close();
+            
+        } catch(HeadlessException | SQLException e){
+      e.getMessage();
+       }
+        
+        
+    }
 }
