@@ -48,13 +48,13 @@
                   <input type ="submit" value="Delete" formaction="http://localhost:8080/MusicApp/webresources/adminServices/delete">
        
       <!--  <button type="submit" class="btn btn-primary" onclick="return Validation()">Login</button>-->
-      
+      <a href="index.html">Log Out</a>
    
         
     </form>
      <%
          if(session.getAttribute("email")==null){
-             response.sendRedirect("adminpanel.jsp");
+             response.sendRedirect("adminLogin.html");
          }
          %>
 </div>

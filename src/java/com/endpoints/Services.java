@@ -54,7 +54,8 @@ public class Services {
       @FormParam("email") String email, 
       @FormParam("password") String password,
       @FormParam("repeatPassword") String repeatPassword,  
-      @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
+      @Context HttpServletResponse servletResponse,
+       @Context HttpServletRequest request) throws SQLException, ClassNotFoundException, NamingException, IOException {
        
         
               boolean valid = true;
@@ -151,10 +152,15 @@ public class Services {
             int resgistered = userController.createAccount(user); 
 
             if (resgistered > 0) {
+                
+                     HttpSession sesh = request.getSession();
+            sesh.setAttribute("email", email);
+           servletResponse.sendRedirect("http://localhost:8080/MusicApp/userPanel.jsp");
             
-                servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn1.html");
+              //  servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn1.html");
            
             }
+            
             else {
                  return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
             }
@@ -172,7 +178,8 @@ public class Services {
       
       @FormParam("email") String email, 
       @FormParam("password") String password, 
-      @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
+      @Context HttpServletResponse servletResponse,
+     @Context HttpServletRequest request) throws SQLException, ClassNotFoundException, NamingException, IOException {
            
         if(email.equals("") || password.equals("")){
         
@@ -188,8 +195,10 @@ public class Services {
         boolean log = userController.checkLogin(u);
         
         if (log) {
-              
-            servletResponse.sendRedirect("http://localhost:8080/MusicApp/loggedIn1.html");
+                    HttpSession sesh = request.getSession();
+            sesh.setAttribute("email", email);
+           servletResponse.sendRedirect("http://localhost:8080/MusicApp/userPanel.jsp");
+           
               
             
         } else {

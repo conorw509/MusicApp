@@ -20,13 +20,19 @@
 <div class="container">
 <div class="login-form">
 <div class="user-main-div">
+    
+       WELCOME ${email}
             <div class="form-group">
                <input type="password" class="form-control" id="search" placeholder="Search" required>       
                <button type="submit" class="btn btn-primary btn-search">Search</button>
             </div>
 
     
-
+  <%
+         if(session.getAttribute("email")==null){
+             response.sendRedirect("userLogin.html");
+         }
+         %>
     
     
     
