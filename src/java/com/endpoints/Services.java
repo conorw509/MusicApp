@@ -19,7 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -206,7 +208,8 @@ public class Services {
     public Response adminLogin( 
       @FormParam("email") String email, 
       @FormParam("password") String password, 
-      @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
+      @Context HttpServletResponse servletResponse,
+      @Context HttpServletRequest request) throws SQLException, ClassNotFoundException, NamingException, IOException {
         
         System.out.println(email);
          System.out.println(password);
@@ -227,7 +230,12 @@ public class Services {
         if (adminLog) {
             
             
-           servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.html");
+             HttpSession sesh = request.getSession();
+            sesh.setAttribute("email", email);
+           servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.jsp");
+           
+           //servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.html");
+          // servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.html");
            
         } 
         
