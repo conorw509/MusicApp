@@ -26,7 +26,8 @@
                <input type="password" class="form-control" id="search" placeholder="Search" required>       
                <button type="submit" class="btn btn-primary btn-search">Search</button>
             </div>
-
+   <a href="index.html">Log Out</a>
+   
     
   <%
          if(session.getAttribute("email")==null){
