@@ -12,6 +12,7 @@ import com.DB.databaseConnection;
 import com.model.User;
 import java.awt.HeadlessException;
 import java.io.IOException;
+import static java.lang.System.console;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -44,6 +45,7 @@ import javax.ws.rs.core.UriInfo;
 public class Services {
   
  private Connection conn;
+ private     HttpSession sesh;
 
     @POST
     @Path("/register")
@@ -57,6 +59,7 @@ public class Services {
       @Context HttpServletResponse servletResponse,
        @Context HttpServletRequest request) throws SQLException, ClassNotFoundException, NamingException, IOException {
        
+        
         
               boolean valid = true;
                controllerUser userController = new controllerUser();
@@ -172,6 +175,9 @@ public class Services {
           
     }
     
+ 
+    
+    
    @POST
     @Path("/userLogin")
     @Consumes("application/x-www-form-urlencoded")
@@ -187,6 +193,7 @@ public class Services {
                return Response.status(Response.Status.UNAUTHORIZED).entity("Fields Can't be Empty").build();
         }
         
+        
         User u = new User();
         u.setEmail(email);
         u.setPassword(password);
@@ -196,13 +203,17 @@ public class Services {
         boolean log = userController.checkLogin(u);
         
         if (log) {
-                    HttpSession sesh = request.getSession();
+                     sesh = request.getSession();
             sesh.setAttribute("email", email);
+                      sesh.getAttribute(email);
+                            System.out.println(sesh.getAttribute(email));
            servletResponse.sendRedirect("http://localhost:8080/MusicApp/userPanel.jsp");
+           
            
               
             
         } else {
+           
            
             return Response.status(Response.Status.UNAUTHORIZED).entity("Either email or password is wrong Incorrect details").build();
             
@@ -211,6 +222,26 @@ public class Services {
     return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
     }
     
+    
+    
+    
+ @Path("/LogOut")
+ public Response logOut( 
+      @Context HttpServletResponse servletResponse,
+      @Context HttpServletRequest request) throws IOException{
+     
+    sesh = request.getSession(false);
+    if(sesh != null){
+          sesh.removeAttribute("email");
+           sesh.invalidate(); 
+    }
+    servletResponse.sendRedirect("http://localhost:8080/MusicApp/index.html");
+ 
+    return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
+                          
+
+ }
+ 
     
     @POST
     @Path("/adminLogin")
@@ -221,9 +252,7 @@ public class Services {
       @Context HttpServletResponse servletResponse,
       @Context HttpServletRequest request) throws SQLException, ClassNotFoundException, NamingException, IOException {
         
-        System.out.println(email);
-         System.out.println(password);
-        
+    
            
            if(email.equals("") || password.equals("")){
         
@@ -240,9 +269,16 @@ public class Services {
         if (adminLog) {
             
             
-             HttpSession sesh = request.getSession();
-            sesh.setAttribute("email", email);
-           servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.jsp");
+           // HttpSession
+             sesh = request.getSession();
+            sesh.setAttribute("email", email); 
+            //request.setAttribute("email", email);
+    
+            sesh.getAttribute(email);
+            
+           // console.log(sesh.getAttribute(email));
+            System.out.println(sesh.getAttribute(email));
+           servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.jsp"); 
            
            //servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.html");
           // servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.html");
@@ -258,7 +294,7 @@ public class Services {
     return Response.status(Response.Status.UNAUTHORIZED).entity("Server Failed").build();
     }
 
-    
-    
+       
+ 
   
 }//end of class

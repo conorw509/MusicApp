@@ -16,18 +16,19 @@
     </head>
 <!------ Include the above in your HEAD tag ---------->
 
-<body id="LoginForm">
+<body id="LoginForm"> 
 <div class="container">
 <div class="login-form">
 <div class="user-main-div">
     
-       WELCOME ${email}
+       WELCOME ${email} 
             <div class="form-group">
                <input type="password" class="form-control" id="search" placeholder="Search" required>       
                <button type="submit" class="btn btn-primary btn-search">Search</button>
             </div>
 
-   
+     <a href="http://localhost:8080/MusicApp/webresources/services/LogOut">Log Out</a> 
+            
     
   <%
          if(session.getAttribute("email")==null){
@@ -35,8 +36,14 @@
          }
          %>
     
-    
-          <a href="index.html">Log Out</a>
+      
+         
+          <!--  <a href="http://localhost:8080/MusicApp/webresources/services/LogOut">Log Out</a> 
+          -->
+          
+           <form action ="http://localhost:8080/MusicApp/webresources/LogServices/LogOut" method ="post">
+             <input type ="submit" value ="Log Out"/>
+         </form> 
     
     
     

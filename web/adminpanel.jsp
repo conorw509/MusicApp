@@ -31,6 +31,7 @@
    <p>Please fill in the following details to add.</p>
    </div>
   <div class="form-group">
+  
         <input type="text" class="form-control" name="id" placeholder="ID"> 
         </div>
          <div class="form-group">
@@ -48,10 +49,11 @@
                   <input type ="submit" value="Delete" formaction="http://localhost:8080/MusicApp/webresources/adminServices/delete">
        
       <!--  <button type="submit" class="btn btn-primary" onclick="return Validation()">Login</button>-->
-      <a href="index.html">Log Out</a>
+      
+      <a href="http://localhost:8080/MusicApp/webresources/services/LogOut">Log Out</a>  
    
         
-    </form>
+   
      <%
          if(session.getAttribute("email")==null){
              response.sendRedirect("adminLogin.html");

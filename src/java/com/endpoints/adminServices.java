@@ -5,7 +5,9 @@
  */
 package com.endpoints;
 
+import com.Controllers.controllerAdmin;
 import com.DB.databaseConnection;
+import com.model.User;
 import java.awt.HeadlessException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,9 +53,24 @@ public class adminServices {
       @FormParam("genre") String genre,
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
             
-    
+       User u = new User();
+       controllerAdmin controller =  new controllerAdmin();
+       boolean getAdId = controller.checkId(u);
+                
+                if(getAdId){
+                         
+                    return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid Input").build();
+                }
+        
+          if(title.equals("") || artist.equals("") || album.equals("") || genre.equals("")){
+     
+               return Response.status(Response.Status.UNAUTHORIZED).entity("\"Fields can't be empty\", \"Incorrect details").build();
+        }
+          
              
         try{
+            
+            
          
             Class.forName("org.apache.derby.jdbc.ClientDriver"); 
            con = DriverManager.getConnection(url, userN, pWord);
@@ -75,7 +92,7 @@ public class adminServices {
            catch(HeadlessException | SQLException e){
               e.getMessage();
            }
-     return Response.status(Response.Status.FORBIDDEN).entity("failed, Id already exists").build();
+     return Response.status(Response.Status.FORBIDDEN).entity("failed").build();
     }
     
      
@@ -91,7 +108,13 @@ public class adminServices {
       @FormParam("album") String album, 
       @FormParam("genre") String genre,
       @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
-               try{
+              
+           if(title.equals("") || artist.equals("") || album.equals("") || genre.equals("")){
+     
+               return Response.status(Response.Status.UNAUTHORIZED).entity("\"Fields can't be empty\", \"Incorrect details").build();
+        } 
+        
+        try{
           Class.forName("org.apache.derby.jdbc.ClientDriver");
          con =DriverManager.getConnection(url, userN, pWord);
         // con = db.getConnection();

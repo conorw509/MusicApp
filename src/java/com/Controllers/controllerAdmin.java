@@ -59,4 +59,36 @@ public class controllerAdmin {
         return false;
     }
     
+    
+    
+           public boolean checkId(User u) {
+        
+        String sql = "";
+        ResultSet rs = null;
+        
+        try {
+            sql = "SELECT * FROM admin1 WHERE id = ?";
+            pst = con.prepareStatement(sql);
+            
+            pst.setInt(1, u.getID());
+            
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                return true;
+            } 
+            else {
+                
+                return false;
+            }
+            
+            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        
+        return false;
+    }
+    
 }
