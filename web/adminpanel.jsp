@@ -48,7 +48,7 @@
                  <input type ="submit" value="Add" formaction="http://localhost:8080/MusicApp/webresources/adminServices/add">
                   <input type ="submit" value="Delete" formaction="http://localhost:8080/MusicApp/webresources/adminServices/delete">
        
-      <!--  <button type="submit" class="btn btn-primary" onclick="return Validation()">Login</button>-->
+  
       
       <a href="http://localhost:8080/MusicApp/webresources/services/LogOut">Log Out</a>  
    

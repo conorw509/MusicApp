@@ -37,14 +37,9 @@
          %>
     
       
-         
-          <!--  <a href="http://localhost:8080/MusicApp/webresources/services/LogOut">Log Out</a> 
-          -->
+        
           
-           <form action ="http://localhost:8080/MusicApp/webresources/LogServices/LogOut" method ="post">
-             <input type ="submit" value ="Log Out"/>
-         </form> 
-    
+         
     
     
 </div></div></div>

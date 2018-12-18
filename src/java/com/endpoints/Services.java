@@ -268,20 +268,13 @@ public class Services {
         boolean adminLog = ac.checkLogin(u); 
         if (adminLog) {
             
-            
-           // HttpSession
              sesh = request.getSession();
             sesh.setAttribute("email", email); 
-            //request.setAttribute("email", email);
     
             sesh.getAttribute(email);
-            
-           // console.log(sesh.getAttribute(email));
             System.out.println(sesh.getAttribute(email));
            servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.jsp"); 
            
-           //servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.html");
-          // servletResponse.sendRedirect("http://localhost:8080/MusicApp/adminpanel.html");
            
         } 
         
