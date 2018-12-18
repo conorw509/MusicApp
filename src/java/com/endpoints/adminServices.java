@@ -79,37 +79,6 @@ public class adminServices {
     }
     
      
-    /*
-       @POST
-    @Path("/update")
-    @Consumes("application/x-www-form-urlencoded")
-    public Response updateMusic(       
-
-      @FormParam("title") String title, 
-      @FormParam("artist") String artist, 
-      @FormParam("album") String album, 
-      @FormParam("genre") String genre,
-      @Context HttpServletResponse servletResponse) throws SQLException, ClassNotFoundException, NamingException, IOException {
-                 
-        try{
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-             conn=DriverManager.getConnection(url, userN, pWord);
-             String sql="UPDATE MUSCICLIST set(id,title, artist, album, genre) VALUES(?, ?, ?, ?)";
-             PreparedStatement pst=conn.prepareStatement(sql);
-             pst = conn.prepareStatement(sql);
-              pst.setString(1, title);
-             pst.setString(2, artist);
-             pst.setString(3,album);
-             pst.setString(4, genre);          
-             pst.executeUpdate();
-            
-              return Response.status(Response.Status.OK).entity("updated").build();
-           }
-           catch(HeadlessException | SQLException e){
-              e.getMessage();
-           }
-                  return Response.status(Response.Status.FORBIDDEN).entity("failed").build();
-    }*/
     
    
      @POST

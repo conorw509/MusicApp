@@ -27,6 +27,7 @@ public class controllerUser {
         super();
         db = new databaseConnection();
         con = db.getConnection();
+        
     }
     
     public int createAccount(User u) {
@@ -103,6 +104,7 @@ public class controllerUser {
                 return true;
             } 
             else {
+                
                 return false;
             }
             

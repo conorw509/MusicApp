@@ -37,7 +37,7 @@ public class controllerAdmin {
         
         try {
             sql = "SELECT * FROM admin1 WHERE email = ? and password = ?";
-            pst = con.prepareStatement(sql);
+            pst = con.prepareStatement(sql); 
             
             pst.setString(1, a.getEmail());
             pst.setString(2, PasswordEncrypt.encryptPassword(a.getPassword()));
